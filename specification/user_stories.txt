@@ -1,0 +1,6 @@
+
+
+Estória 1 - Autor: Emerson Shigueo Sugimoto
+Data: 14/06/2010
+
+A partir de uma fórmula da lógica proposicional obter uma árvore de análise sintática.
