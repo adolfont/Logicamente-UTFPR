@@ -1,0 +1,15 @@
+verificar a sintaxe de uma fórmula
+
+ ** fórmula atômica (OK)
+ ** negação de fórmula atômica (OK)
+ ** fórmula com conectivo binário e duas atômicas
+ ** negação de fórmula qualquer 
+ ** fórmula com conectivo binário qualquer
+
+ - aridade dos conectivos
+ - parênteses
+ - verificar a precedência
+
+construir a árvore de análise
+ - criar o objeto que represente a árvore
+ - desenhar a árvore graficamente
