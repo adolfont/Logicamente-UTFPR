@@ -1,10 +1,16 @@
 verificar a sintaxe de uma fórmula
 
  ** fórmula atômica (OK)
+ *** Exs.: A, A12, P, q, rst 
  ** negação de fórmula atômica (OK)
- ** fórmula com conectivo binário e duas atômicas
- ** negação de fórmula qualquer 
- ** fórmula com conectivo binário qualquer
+ *** Exs.: !A, !A12, !P, !q, !rst
+ ** fórmula com conectivo binário e duas atômicas (OK)
+ *** Exs.: A&B, A|B, A->B, ...
+ ** negação de fórmula qualquer
+ *** Exs.: !(A&!B)
+ *** Exs.: !A&!B não é negação de fórmula qualquer  
+ ** fórmula com conectivo binário ligando duas fórmulas não necessariamente atômicas
+ *** Exs.: A&B&C, A&B|C, !A&!B   
 
  - aridade dos conectivos
  - parênteses
