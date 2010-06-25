@@ -1,0 +1,5 @@
+Logicamente-UTFPR 
+10. Desenhar graficamente uma árvore de análise sintática (como definido por Huth e Ryan) a partir de uma fórmula sintaticamente correta da lógica clássica proposicional
+20. Desenhar graficamente uma árvore de análise sintática a partir de uma fórmula sintaticamente correta da lógica clássica de predicados
+25. Permitir a digitação dos símbolos utilizados nas fórmulas usando botões
+30. Verificar a correção sintática de fórmulas enquanto elas estão sendo digitadas
