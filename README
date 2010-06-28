@@ -1,0 +1,13 @@
+The objective of this system is to help students to learn the syntax of 
+propositional classical logic.
+
+The student gives as input a formula and the system draws a parse tree 
+for the formula (if the formula is syntactically correct).
+
+
+This system is based in the "Tree 
+Interaction" tab of the Logicamente system: 
+http://www.dimap.ufrn.br/logicamente/.
+
+The only use case for this system can be seen in:
+http://yuml.me/diagram/scruffy/usecase/[Student]-(Draw Parse Tree)
