@@ -2,13 +2,13 @@ The objective of this version of the system is to help students to learn the syn
 
 The student gives as input a formula and the system draws a parse tree for the formula (if the formula is syntactically correct).
 
-This system is based in the "Tree Interaction" tab of the Logicamente system:  http://www.dimap.ufrn.br/logicamente/.
+This system is based in the "Tree Interaction" tab of the Logicamente system (http://www.dimap.ufrn.br/logicamente/).
 
 The only use case for this system can be seen in: 
 http://yuml.me/diagram/scruffy/usecase/[Student]-(DrawParseTree)
 
-
 The development of this system is an activity in the 2010 edition of the Agile Methods course (http://www.dainf.ct.utfpr.edu.br/wiki/index.php/Metodologias_%C3%81geis_para_o_Desenvolvimento_de_Software) at PPGCA.
 
-PPGCA - Masters in Applied Computing at UTFPR: http://www.ppgca.ct.utfpr.edu.br
 Adolfo Neto: http://www.dainf.ct.utfpr.edu.br/~adolfo
+PPGCA - Masters in Applied Computing at UTFPR: http://www.ppgca.ct.utfpr.edu.br
+
