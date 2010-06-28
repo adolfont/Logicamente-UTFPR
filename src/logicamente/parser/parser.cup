@@ -1,0 +1,73 @@
+/*
+PPGCA, 2010
+
+*/
+package logicamente.parser;
+import logicamente.formulas.*;
+
+parser code {:
+
+    public void report_error(String message, Object info){
+
+        StringBuffer m = new StringBuffer("Error");
+
+        if (info instanceof java_cup.runtime.Symbol) {
+            java_cup.runtime.Symbol s = ((java_cup.runtime.Symbol) info);
+
+            if (s.left >= 0) {
+                m.append(" in line "+(s.left+1));
+                if (s.right >= 0)
+                    m.append(", column "+(s.right+1));
+            }
+        }
+
+        m.append(" : "+message);
+
+    	throw new Error (m.toString());
+    }
+
+    public void report_fatal_error(String message, Object info) {
+        report_error(message, info);
+    }
+:};
+
+
+/* ------------Declaration of Terminals and Non Terminals Section----------- */
+
+terminal          NEG, AND, OR, IMPLIES, LPAREN, RPAREN;
+terminal String   ID;
+
+non terminal   end;
+non terminal Formula    expr, term, andExpr, orExpr;
+
+
+/* -------------Precedence and Associatively of Terminals Section----------- */
+
+precedence right IMPLIES;
+precedence left  OR;
+precedence left  AND;
+precedence left  NEG;
+
+expr      ::=
+           expr:e1 AND expr:e2
+                 {: RESULT = new CompositeFormula(Formula.AND, e1, e2); :}
+           |
+           expr:e1 OR expr:e2
+                 {: RESULT = new CompositeFormula(Formula.OR, e1, e2);:}
+           |
+           expr:e1 IMPLIES expr:e2
+                 {: RESULT = new CompositeFormula(Formula.IMPLIES, e1, e2);:}
+           |
+           NEG expr:e
+                 {: RESULT = new CompositeFormula(Formula.NOT, e);:}
+           |
+           term:t
+                 {: RESULT = t; :}
+           ;
+           
+term      ::= LPAREN expr:e RPAREN
+                 {: RESULT = e; :}
+                 |
+                 ID:i
+                 {: RESULT = new AtomicFormula(i); :}
+                 ;
