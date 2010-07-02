@@ -1,13 +1,7 @@
 package logicamente.parser;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.*;
-
-import java.io.StringReader;
-
-import logicamente.formulas.AtomicFormula;
-import logicamente.formulas.CompositeFormula;
-import logicamente.formulas.Formula;
+import static org.junit.Assert.assertFalse;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -15,121 +9,43 @@ import org.junit.Test;
 /**
  * Tests for the generated parser.
  * 
- * @author Turma Métodos Ágeis PPGCA UTFPR
+ * @author Turma Métodos Ágeis PPGCA UTFPR 2010
  * 
  */
 public class ParserTest {
 
-	private StringReader reader;
-	private SyntaxTreeLexer lexer;
-	private SyntaxTreeParser parser;
-	private Object f;
-	private AtomicFormula af;
-	private CompositeFormula cf;
-	CompositeFormula leftFormula;
-	Formula rightFormula;
+	private Parser parser;
 
 	@Before
 	public void setUp() {
-		reader = new StringReader("");
-		lexer = new SyntaxTreeLexer(reader);
-		parser = new SyntaxTreeParser(lexer);
+		parser = new Parser();
 	}
 
 	@Test
-	public void parsingAtomicFormulas() throws Exception {
-		reader = new StringReader("A1");
-		lexer.yyreset(reader);
-		f = parser.parse().value;
-		assertTrue(f instanceof Formula);
-		assertTrue(f instanceof AtomicFormula);
-		af = ((AtomicFormula) f);
-		assertEquals("A1", af.toString());
-
-		reader = new StringReader("B");
-		lexer.yyreset(reader);
-		f = parser.parse().value;
-		assertTrue(f instanceof Formula);
-		assertTrue(f instanceof AtomicFormula);
-		af = ((AtomicFormula) f);
-		assertEquals("B", af.toString());
-	}
-
-	@Test
-	public void parsingSimplestPossibleUnaryFormula() throws Exception {
-		reader = new StringReader("!A1");
-		lexer.yyreset(reader);
-
-		f = parser.parse().value;
-		assertTrue(f instanceof Formula);
-		assertTrue(f instanceof CompositeFormula);
-		cf = ((CompositeFormula) f);
-		assertEquals(Formula.NOT, cf.getConnective());
-		assertEquals("A1", cf.getLeftFormula().toString());
-		assertNull(cf.getRightFormula());
+	public void parsingAtomicFormulas(){
+		assertEquals("A", parser.parse("A").getFormula().toString());
+		assertEquals("A", parser.parse("A  ").getFormula().toString());
+		assertEquals("A", parser.parse("  A  ").getFormula().toString());
+		assertEquals("A123", parser.parse("A123  ").getFormula().toString());
 	}
 	
 	@Test
-	public void parsingSimplestPossibleBinaryFormula() throws Exception {
-		reader = new StringReader("A&B");
-		lexer.yyreset(reader);
-
-		f = parser.parse().value;
-		assertTrue(f instanceof Formula);
-		assertTrue(f instanceof CompositeFormula);
-		cf = ((CompositeFormula) f);
-		assertEquals(Formula.AND, cf.getConnective());
-		assertEquals("A", cf.getLeftFormula().toString());
-		assertEquals("B", cf.getRightFormula().toString());
+	public void parsingWrongAtomicFormulas(){
+		assertFalse(parser.parse("  123  ").parseCorrect());
 	}
 
 	@Test
-	public void parsingSimpleAndBinaryFormulasWherePrecedenceMatters() throws Exception {
-
-		reader = new StringReader("A&B&C");
-		lexer.yyreset(reader);
-
-		f = parser.parse().value;
-		assertTrue(f instanceof Formula);
-		assertTrue(f instanceof CompositeFormula);
-		cf = ((CompositeFormula) f);
-		assertEquals(Formula.AND, cf.getConnective());
-		assertTrue(cf.getLeftFormula() instanceof CompositeFormula);
-		leftFormula = (CompositeFormula) cf.getLeftFormula();
-		rightFormula = cf.getRightFormula();
-		assertEquals("(A&B)", leftFormula.toString());
-		assertEquals("C", rightFormula.toString());
-	}
-	
-	@Test
-	public void parsingSimpleOrBinaryFormulasWherePrecedenceMatters() throws Exception {
-		reader = new StringReader("A|B|C");
-		lexer.yyreset(reader);
-
-		f = parser.parse().value;
-		assertTrue(f instanceof Formula);
-		assertTrue(f instanceof CompositeFormula);
-		cf = ((CompositeFormula) f);
-		assertEquals(Formula.OR, cf.getConnective());
-		assertTrue(cf.getLeftFormula() instanceof CompositeFormula);
-		leftFormula = (CompositeFormula) cf.getLeftFormula();
-		rightFormula = cf.getRightFormula();
-		assertEquals("(A|B)", leftFormula.toString());
-		assertEquals("C", rightFormula.toString());
-	}
-
-	@Test
-	public void parsingSimpleImpliesBinaryFormulasWherePrecedenceMatters() throws Exception {
-		reader = new StringReader("A->B->C");
-		lexer.yyreset(reader);
-
-		f = parser.parse().value;
-		assertTrue(f instanceof Formula);
-		assertTrue(f instanceof CompositeFormula);
-		cf = ((CompositeFormula) f);
-		assertEquals(Formula.IMPLIES, cf.getConnective());
-		assertEquals("A", cf.getLeftFormula().toString());
-		assertEquals("(B->C)", cf.getRightFormula().toString());
+	public void parsingNegatedFormulas() throws Exception {
+		assertEquals("A", parser.parse("A").getFormula().toString());
+		assertEquals("!A", parser.parse("! A").getFormula().toString());
+		assertEquals("(A&B)", parser.parse("A  & B").getFormula().toString());
+		assertEquals("(A|B)", parser.parse("A  | B").getFormula().toString());
+		assertEquals("(A->B)", parser.parse("   A  -> B  ").getFormula().toString());
+		assertEquals("((A&B)&C)", parser.parse(" A  & B  & C").getFormula().toString());
+		assertEquals("((A|B)|C)", parser.parse(" A  | B  | C").getFormula().toString());
+		assertEquals("(A->(B->C))", parser.parse("   A  -> B  -> C").getFormula().toString());
+		assertEquals("!(A->!(!B->C))", parser.parse("! (A  -> !(!B  -> C))").getFormula()
+				.toString());
 	}
 
 }

@@ -10,7 +10,7 @@ public class SyntaxTreeGenerator {
 	public static final String OR_SYMBOL = "|";
 	public static final String IMPLIES_SYMBOL = "-";
 
-	// TODOS OS CONECTORES DEVEM ESTAR NESTA LISTA
+	// All conectives maus be in this list
 	public static final String[] BINARY_CONNECTORS = {AND_SYMBOL, OR_SYMBOL, IMPLIES_SYMBOL};
 	
 	private Pattern atomicFormulaPattern = Pattern
