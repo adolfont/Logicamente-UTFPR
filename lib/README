@@ -1,0 +1,6 @@
+Here is the place to put the two jars used:
+java_cup.jar  
+JFlex.jar 
+
+Both jars can be found in
+http://github.com/adolfont/KEMS/tree/master/kems.ext.lib/ext/
