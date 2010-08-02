@@ -18,3 +18,11 @@ UTFPR: http://www.utfpr.edu.br
 PPGCA (Masters in Applied Computing at UTFPR): http://www.ppgca.ct.utfpr.edu.br
 Agile Methods course at PPGCA: http://www.dainf.ct.utfpr.edu.br/wiki/index.php/Metodologias_%C3%81geis_para_o_Desenvolvimento_de_Software.
 
+
+= Instructions for Windows users =
+
+* Download Egit http://www.eclipse.org/egit/
+* Download the Logicamente-UTFPR GitHub repository
+* Change Worskpace "Text file encoding" (Window -> Preferences -> General -> Workspace) to UTF-8
+* Download the libraries used (see instructions in lib/README)
+
