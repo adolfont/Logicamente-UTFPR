@@ -4,7 +4,7 @@ JFlex.jar
 
 The jars can be downloaded from:
 
-* http://github.com/adolfont/KEMS/raw/master/kems.ext.lib/ext/java_cup.jar
-* http://github.com/adolfont/KEMS/raw/master/kems.ext.lib/ext/JFlex.jar
++ http://github.com/adolfont/KEMS/raw/master/kems.ext.lib/ext/java_cup.jar
++ http://github.com/adolfont/KEMS/raw/master/kems.ext.lib/ext/JFlex.jar
 
 You also need to configure the build path to add these two jars and also Junit 4 library.
