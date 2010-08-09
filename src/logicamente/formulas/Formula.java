@@ -6,5 +6,7 @@ public interface Formula {
 	public static final String OR = "|";
 	public static final String NOT = "!";
 	public static final String IMPLIES = "->";
+	int getComplexity();
+	int getHeight();
 	
 }

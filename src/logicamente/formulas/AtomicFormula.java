@@ -12,4 +12,14 @@ public class AtomicFormula implements Formula {
 	public String toString() {
 		return atom;
 	}
+
+	@Override
+	public int getComplexity() {
+		return 1;
+	}
+
+	@Override
+	public int getHeight() {
+		return 0;
+	}
 }

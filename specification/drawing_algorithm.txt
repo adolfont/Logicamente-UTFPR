@@ -1,0 +1,34 @@
+Algoritmo para desenhar árvore em matriz [1..QC, 1..QL]
+
+Decisões: 
+* cada fórmula atômica deverá ter comprimento máximo 2
+
+
+
+QC (Quantidade de colunas) = complexidade da fórmula
+QL (Quantidade de linhas) = altura da fórmula mais 1
+
+  1   2   3  4  5  ...  QC
+1
+2
+3
+4
+5
+.
+.
+QL
+
+
+posições x,y onde x = coluna y=linha
+
+Desenha Arvore (Formula f)
+
+Como calcular o parametro adicional que posiciona a linha
+
+Desenha a raiz da arvore
+  Raiz da árvore fica em
+    (complexidade da fórmula da esquerda + 1, 1)  
+
+Desenha Arvore (formula da esquerda)  
+Desenha Arvore (formula da direita)  
+
