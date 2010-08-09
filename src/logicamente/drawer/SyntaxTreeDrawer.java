@@ -30,7 +30,7 @@ public class SyntaxTreeDrawer extends JFrame {
 		std.setTitle("Syntax Tree Painter");
 
 		
-		// alguns testes
+// 		alguns testes
 //		std.setFormula("A->B");
 //		std.setFormula("A->B->C->D->E->F->G"); // esse funciona
 		std.setFormula("(A->B->C)->D->E->F->G"); // esse dá erro: fica encavalado!
