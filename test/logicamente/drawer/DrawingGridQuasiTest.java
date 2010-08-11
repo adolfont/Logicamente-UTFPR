@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 
 public class DrawingGridQuasiTest extends JFrame {
 
+	private static final long serialVersionUID = -1858951529222579460L;
 	public static DrawingGrid dg;
 
 	public static void main(String[] args) {
@@ -16,14 +17,15 @@ public class DrawingGridQuasiTest extends JFrame {
 		dgqt.setVisible(true);
 
 		dg = new DrawingGrid(dgqt.getContentPane().getGraphics());
-		dg.setBounds(dgqt.getContentPane().getBounds().width, dgqt.getContentPane().getBounds().height);
+		dg.setBounds(dgqt.getContentPane().getBounds().width, dgqt
+				.getContentPane().getBounds().height);
 		dg.setGrid(5, 3);
-		dg.setNodeDiameter(50);
+		dg.setNodeDiameter(30);
 	}
 
 	public void paint(Graphics g) {
 
-		dg.drawGridLines();
+//		dg.drawGridLines();
 
 		dg.drawNode(1, 2, "AAA");
 		dg.drawNode(3, 2, "BB");
