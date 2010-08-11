@@ -89,10 +89,6 @@ public class DrawingGrid {
 	}
 
 	public void drawLine(int x1, int y1, int x2, int y2) {
-		// y1 == y2
-		// x1 > x2
-		// y1 > y2
-
 		if (x1 == x2) {
 			if (y1 > y2) {
 				int aux = y2;
@@ -104,7 +100,6 @@ public class DrawingGrid {
 			int yInf = calculateLineY(y2) - nodeDiameter / 2;
 			graphics.drawLine(x, ySup, x, yInf);
 		} else {
-
 			if (y1 == y2) {
 				if (x1 > x2) {
 					int aux = x2;
@@ -120,10 +115,22 @@ public class DrawingGrid {
 				if (x1 > x2) {
 					drawLine(x2, y2, x1, y1);
 				} else {
-					// x1 < x2 & y1 > y2
-					graphics.drawLine(calculateLineXLeft(x1),
-							calculateLineY(y1), calculateLineXRight(x2),
-							calculateLineY(y2));
+					// x1 < x2
+					
+					if (y1 < y2){
+						graphics.drawLine(calculateLineXLeft(x1)-nodeDiameter/2,
+								calculateLineY(y1)+nodeDiameter/2, calculateLineX(x2),
+								calculateLineY(y2) - nodeDiameter / 2);
+					}else{
+						graphics.drawLine(calculateLineXLeft(x1)-nodeDiameter/2,
+								calculateLineY(y1)-nodeDiameter/2, calculateLineX(x2),
+								calculateLineY(y2)+nodeDiameter/2);
+					}
+					
+					
+//					graphics.drawLine(calculateLineXLeft(x1),
+//							calculateLineY(y1), calculateLineXRight(x2),
+//							calculateLineY(y2));
 				}
 
 			}
