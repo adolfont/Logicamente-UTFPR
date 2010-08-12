@@ -1,90 +1,109 @@
 package logicamente.drawer;
 
 import java.awt.Graphics;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowStateListener;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JFrame;
 
 import logicamente.formulas.AtomicFormula;
 import logicamente.formulas.CompositeFormula;
 import logicamente.formulas.Formula;
+import logicamente.parser.ParseResult;
 import logicamente.parser.Parser;
 
-public class SyntaxTreeDrawer extends JFrame implements WindowStateListener {
+public class SyntaxTreeDrawer extends JFrame {
 
 	private static final long serialVersionUID = 4393288660576735767L;
 
-	private int x;
-	private int y;
 	private int width;
 	private int height;
-	private int cellWidth;
-	private int cellHeight;
-
-	private int leftBorder = 3;
-	private int topBorder = 24;
-
-	private int diameter;
-
 	private Parser parser;
 	private Formula formula;
-	private byte[][] screen;
-
 	private DrawingGrid grid;
+	private Map<String, String> connectiveSymbolsMap;
 
 	public SyntaxTreeDrawer() {
-		this.x = 250;
-		this.y = 50;
 		parser = new Parser();
 		this.width = 700;
 		this.height = 500;
-		this.diameter = 60;
 
 		this.setBounds(100, 100, width, height);
-		setTitle("Syntax Tree Painter");
+		setTitle("Syntax Tree Drawer");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+		// The symbols came from
+		// http://en.wikipedia.org/wiki/List_of_logic_symbols
+		connectiveSymbolsMap = new HashMap<String, String>();
+		connectiveSymbolsMap.put(Formula.NOT, "¬");
+		connectiveSymbolsMap.put(Formula.AND, "∧");
+		connectiveSymbolsMap.put(Formula.OR, "∨");
+		connectiveSymbolsMap.put(Formula.IMPLIES, "→");
 
 	}
 
 	public static void main(String[] args) {
-		SyntaxTreeDrawer std = new SyntaxTreeDrawer();
+
+		String formula;
+		if (args.length > 0) {
+			formula = args[0];
+			SyntaxTreeDrawer std = new SyntaxTreeDrawer();
+			std.setFormula(formula);
+			std.setVisible(true);
+		} else {
+			System.out
+					.println("Usage: java -jar logicamente-utfpr.jar '<formula>'");
+			System.out.println();
+			System.out.println("Some examples:");
+			// alguns testes
+			System.out.println("java -jar logicamente-utfpr.jar 'A'");
+			// std.setFormula("A");
+			System.out.println("java -jar logicamente-utfpr.jar 'A->B'");
+			// std.setFormula("A->B");
+			System.out.println("java -jar logicamente-utfpr.jar 'A->B->C'");
+			// std.setFormula("A->B->C");
+			System.out.println("java -jar logicamente-utfpr.jar 'A->B->C->D->E->F->G'");
+			// std.setFormula("A->B->C->D->E->F->G");
+			System.out.println("java -jar logicamente-utfpr.jar '(!A->B->!!C)->D->E->F->G'");
+			// std.setFormula("(!A->B->!!C)->D->E->F->G");
+			// std.setFormula("(!A&B|!!C)->D->(E1&(E2&E3))->(F1&F2&F3)->G");
+			System.exit(0);
+		}
 
 		// std.setBounds(x, y, width, height); // opcionalmente fora
 
-		// alguns testes
-		std.setFormula("A");
-		// std.setFormula("A->B");
-		// std.setFormula("A->B->C");
-		// std.setFormula("A->B->C->D->E->F->G");
-		std.setFormula("(!A->B->!!C)->D->E->F->G");
+		// TODO Lança exceção
+		// std.setFormula("(!A&B|!!C)->D->(E1&(E2&E3))->(F1&F2&F3(->G");
 
-		std.setVisible(true);
 	}
 
 	public void setFormula(String string) {
-		formula = parser.parse(string).getFormula();
+		ParseResult result = parser.parse(string);
+		if (result.parseCorrect()) {
+			formula = result.getFormula();
+		}
 	}
 
 	public void paint(Graphics g) {
-		// drawTree(formula);
-		// drawSyntaxTree(formula);
+		if (formula != null) {
 
-		g.clearRect(0, 0, getBounds().width, getBounds().height);
+			g.clearRect(0, 0, getBounds().width, getBounds().height);
 
-		grid = new DrawingGrid(getContentPane().getGraphics());
+			grid = new DrawingGrid(getContentPane().getGraphics());
 
-		grid.setBounds(getContentPane().getBounds().width, getContentPane()
-				.getBounds().height);
-		grid.setNodeDiameter(50);
-		grid.setGrid(formula.getComplexity() - formula.getNegationDegree(),
-				formula.getHeight() + 1);
-		grid.drawGridLines();
-
-		drawSyntaxTreeV3(0, 0, 1, 1, formula);
+			grid.setBounds(getContentPane().getBounds().width, getContentPane()
+					.getBounds().height);
+			grid.setNodeDiameter(50);
+			grid.setGrid(formula.getComplexity() - formula.getNegationDegree(),
+					formula.getHeight() + 1);
+			drawSyntaxTree(0, 0, 1, 1, formula);
+		}
+		else{
+			g.drawString("Parsing error", 50, 50);
+		}
 	}
 
-	private void drawSyntaxTreeV3(int xPrev, int yPrev, int x, int y,
+	private void drawSyntaxTree(int xPrev, int yPrev, int x, int y,
 			Formula formula) {
 		if (formula instanceof AtomicFormula) {
 			if (xPrev != 0) {
@@ -92,44 +111,50 @@ public class SyntaxTreeDrawer extends JFrame implements WindowStateListener {
 			}
 			grid.drawNode(x, y, formula.toString());
 		} else {
-
 			Formula left = (((CompositeFormula) formula).getLeftFormula());
-
 			if (((CompositeFormula) formula).getConnective() == Formula.NOT) {
-				if (xPrev != 0) {
-					grid.drawLine(xPrev, yPrev, x, y);
-				}
-				grid.drawNode(x, y, ((CompositeFormula) formula)
-						.getConnective().toString());
-				drawSyntaxTreeV3(x, y, x, y + 1, left);
+				drawNotNode_in_SyntaxTree(xPrev, yPrev, x, y, formula, left);
 			} else {
-
-				Formula right = (((CompositeFormula) formula).getRightFormula());
-				if (xPrev != 0) {
-					grid.drawLine(xPrev, yPrev, x + left.getComplexity()
-							- left.getNegationDegree(), y);
-				}
-				grid
-						.drawNode(x + left.getComplexity()
-								- left.getNegationDegree(), y,
-								((CompositeFormula) formula).getConnective()
-										.toString());
-				drawSyntaxTreeV3(x + left.getComplexity()
-						- left.getNegationDegree(), y, x, y + 1, left);
-				if (right != null)
-					drawSyntaxTreeV3(x + left.getComplexity()
-							- left.getNegationDegree(), y, x
-							+ left.getComplexity() - left.getNegationDegree()
-							+ 1, y + 1, right);
+				drawBinaryNode_in_SyntaxTree(xPrev, yPrev, x, y, formula, left);
 			}
 		}
-
 	}
 
-	@Override
-	public void windowStateChanged(WindowEvent e) {
-		// TODO Auto-generated method stub
+	private void drawNotNode_in_SyntaxTree(int xPrev, int yPrev, int x, int y,
+			Formula formula, Formula left) {
+		if (xPrev != 0) {
+			grid.drawLine(xPrev, yPrev, x, y);
+		}
+		// grid.drawNode(x, y, ((CompositeFormula) formula).getConnective()
+		// .toString());
+		grid.drawNode(x, y, getConnectiveSymbol(((CompositeFormula) formula)
+				.getConnective()));
+		drawSyntaxTree(x, y, x, y + 1, left);
+	}
 
+	private void drawBinaryNode_in_SyntaxTree(int xPrev, int yPrev, int x,
+			int y, Formula formula, Formula left) {
+		Formula right = (((CompositeFormula) formula).getRightFormula());
+		if (xPrev != 0) {
+			grid.drawLine(xPrev, yPrev, x + left.getComplexity()
+					- left.getNegationDegree(), y);
+		}
+		// grid.drawNode(x + left.getComplexity() - left.getNegationDegree(), y,
+		// ((CompositeFormula) formula).getConnective().toString());
+		grid.drawNode(x + left.getComplexity() - left.getNegationDegree(), y,
+				getConnectiveSymbol(((CompositeFormula) formula)
+						.getConnective()));
+
+		drawSyntaxTree(x + left.getComplexity() - left.getNegationDegree(), y,
+				x, y + 1, left);
+		if (right != null)
+			drawSyntaxTree(x + left.getComplexity() - left.getNegationDegree(),
+					y, x + left.getComplexity() - left.getNegationDegree() + 1,
+					y + 1, right);
+	}
+
+	private String getConnectiveSymbol(String connective) {
+		return connectiveSymbolsMap.get(connective);
 	}
 
 }
