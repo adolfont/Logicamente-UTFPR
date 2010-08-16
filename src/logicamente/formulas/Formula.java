@@ -8,5 +8,6 @@ public interface Formula {
 	public static final String IMPLIES = "->";
 	int getComplexity();
 	int getHeight();
+	int getNegationDegree();
 	
 }

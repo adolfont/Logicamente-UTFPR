@@ -23,13 +23,47 @@ public class SyntaxTreeDrawer extends JFrame {
 	private DrawingGrid grid;
 	private Map<String, String> connectiveSymbolsMap;
 
+	public static void main(String[] args) {
+		String formula;
+		if (args.length > 0) {
+			formula = args[0];
+			SyntaxTreeDrawer std = new SyntaxTreeDrawer();
+			std.setFormula(formula);
+			std.setVisible(true);
+		} else {
+			showCommandLineComments();
+		}
+	}
+
+	private static void showCommandLineComments() {
+		System.out
+				.println("Usage: java -jar logicamente-utfpr.jar '<formula>'");
+		System.out.println();
+		System.out.println("Some examples:");
+		// alguns testes
+		System.out.println("java -jar logicamente-utfpr.jar 'A'");
+		// std.setFormula("A");
+		System.out.println("java -jar logicamente-utfpr.jar 'A->B'");
+		// std.setFormula("A->B");
+		System.out.println("java -jar logicamente-utfpr.jar 'A->B->C'");
+		// std.setFormula("A->B->C");
+		System.out.println("java -jar logicamente-utfpr.jar 'A->B->C->D->E->F->G'");
+		// std.setFormula("A->B->C->D->E->F->G");
+		System.out.println("java -jar logicamente-utfpr.jar '(!A->B->!!C)->D->E->F->G'");
+		// std.setFormula("(!A->B->!!C)->D->E->F->G");
+		// std.setFormula("(!A&B|!!C)->D->(E1&(E2&E3))->(F1&F2&F3)->G");
+		System.out.println();
+		System.out.println("More information at http://github.com/adolfont/Logicamente-UTFPR/");
+		System.exit(0);
+	}
+
 	public SyntaxTreeDrawer() {
 		parser = new Parser();
 		this.width = 700;
 		this.height = 500;
 
 		this.setBounds(100, 100, width, height);
-		setTitle("Syntax Tree Drawer");
+		setTitle("Logicamente-UTFPR - Syntax Tree Drawer");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 		// The symbols came from
@@ -39,42 +73,6 @@ public class SyntaxTreeDrawer extends JFrame {
 		connectiveSymbolsMap.put(Formula.AND, "∧");
 		connectiveSymbolsMap.put(Formula.OR, "∨");
 		connectiveSymbolsMap.put(Formula.IMPLIES, "→");
-
-	}
-
-	public static void main(String[] args) {
-
-		String formula;
-		if (args.length > 0) {
-			formula = args[0];
-			SyntaxTreeDrawer std = new SyntaxTreeDrawer();
-			std.setFormula(formula);
-			std.setVisible(true);
-		} else {
-			System.out
-					.println("Usage: java -jar logicamente-utfpr.jar '<formula>'");
-			System.out.println();
-			System.out.println("Some examples:");
-			// alguns testes
-			System.out.println("java -jar logicamente-utfpr.jar 'A'");
-			// std.setFormula("A");
-			System.out.println("java -jar logicamente-utfpr.jar 'A->B'");
-			// std.setFormula("A->B");
-			System.out.println("java -jar logicamente-utfpr.jar 'A->B->C'");
-			// std.setFormula("A->B->C");
-			System.out.println("java -jar logicamente-utfpr.jar 'A->B->C->D->E->F->G'");
-			// std.setFormula("A->B->C->D->E->F->G");
-			System.out.println("java -jar logicamente-utfpr.jar '(!A->B->!!C)->D->E->F->G'");
-			// std.setFormula("(!A->B->!!C)->D->E->F->G");
-			// std.setFormula("(!A&B|!!C)->D->(E1&(E2&E3))->(F1&F2&F3)->G");
-			System.exit(0);
-		}
-
-		// std.setBounds(x, y, width, height); // opcionalmente fora
-
-		// TODO Lança exceção
-		// std.setFormula("(!A&B|!!C)->D->(E1&(E2&E3))->(F1&F2&F3(->G");
-
 	}
 
 	public void setFormula(String string) {
@@ -86,17 +84,16 @@ public class SyntaxTreeDrawer extends JFrame {
 
 	public void paint(Graphics g) {
 		if (formula != null) {
-
 			g.clearRect(0, 0, getBounds().width, getBounds().height);
 
 			grid = new DrawingGrid(getContentPane().getGraphics());
-
 			grid.setBounds(getContentPane().getBounds().width, getContentPane()
 					.getBounds().height);
 			grid.setNodeDiameter(50);
 			grid.setGrid(formula.getComplexity() - formula.getNegationDegree(),
 					formula.getHeight() + 1);
 			drawSyntaxTree(0, 0, 1, 1, formula);
+			grid.drawGridLines();
 		}
 		else{
 			g.drawString("Parsing error", 50, 50);

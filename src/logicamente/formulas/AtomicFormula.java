@@ -22,4 +22,9 @@ public class AtomicFormula implements Formula {
 	public int getHeight() {
 		return 0;
 	}
+
+	@Override
+	public int getNegationDegree() {
+		return 0;
+	}
 }

@@ -24,6 +24,16 @@ public class FormulaComplexityTest {
 		assertEquals(5,parseFormula("!A->!B").getComplexity());
 	}
 
+	@Test
+	public void testIfGetNegationDegreeWorks() throws Exception {
+		assertEquals(0,parseFormula("A").getNegationDegree());
+		assertEquals(1,parseFormula("!A").getNegationDegree());
+		assertEquals(0,parseFormula("A->B").getNegationDegree());
+		assertEquals(1,parseFormula("A->!B").getNegationDegree());
+		assertEquals(2,parseFormula("!A->!B").getNegationDegree());
+	}
+
+	
 	private Formula parseFormula(String string) {
 		return parser.parse(string).getFormula();
 	}

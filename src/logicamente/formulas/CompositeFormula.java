@@ -56,4 +56,12 @@ public class CompositeFormula implements Formula {
 								.getHeight() : 0));
 	}
 
+	@Override
+	public int getNegationDegree() {
+		return ((getConnective() == Formula.NOT) ? 1 : 0)
+				+ getLeftFormula().getNegationDegree()
+				+ (getRightFormula() != null ? getRightFormula()
+						.getNegationDegree() : 0);
+	}
+
 }

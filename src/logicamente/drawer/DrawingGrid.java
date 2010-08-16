@@ -17,8 +17,6 @@ public class DrawingGrid {
 	private Color fillColor;
 	private Color foreColor;
 
-	// private int fontSize;
-
 	public DrawingGrid(Graphics graphics) {
 		this.graphics = graphics;
 		this.width = 100;
@@ -27,7 +25,6 @@ public class DrawingGrid {
 		this.gridHeight = 10;
 		this.fillColor = Color.WHITE;
 		this.foreColor = Color.BLACK;
-		// this.fontSize = graphics.getFontMetrics().getHeight();
 	}
 
 	public void setBounds(int width, int height) {
@@ -55,6 +52,7 @@ public class DrawingGrid {
 
 		if (graphics.getFontMetrics().getHeight() > cellWidth
 				|| graphics.getFontMetrics().getHeight() > cellHeight) {
+			// TODO o que faz?
 		}
 
 		if (nodeDiameter / 2 - 4 > 5) {
@@ -81,7 +79,7 @@ public class DrawingGrid {
 		int stringWidth = graphics.getFontMetrics(graphics.getFont())
 				.stringWidth(aString.toString());
 		int stringHeight = graphics.getFontMetrics(graphics.getFont())
-				.getHeight()-3; // -3 because it was not centralized
+				.getHeight() - 3; // -3 because it was not centralized
 
 		graphics.drawString(aString, calculateXHalfDiameter(x) - stringWidth
 				/ 2, calculateLineY(y) + stringHeight / 2);
@@ -96,7 +94,6 @@ public class DrawingGrid {
 	}
 
 	public void drawGridLines() {
-
 		for (int i = 1; i <= width; i++) {
 			graphics.drawLine(i * cellWidth, 0, i * cellWidth, height);
 		}

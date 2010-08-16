@@ -1,4 +1,16 @@
+11/08/2010
 
+[   ] Refactor and remove unused code
+[ X ] Draw symbols for connectives 
+[   ] Let the user input with buttons for connectives
+[ X ] Input from command-line
+[   ] Automatic adjustement of size
+[   ] Show grid lines option
+[   ] Show complexity, height and negation degree
+[   ] Applet
+
+
+================
 Refatorar os testes para que fiquem mais simples (testar só a saída?)! OK!
 Testar fórmulas que misturem conectivos diferentes
 

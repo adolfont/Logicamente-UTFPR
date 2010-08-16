@@ -1,0 +1,14 @@
+
+INTERFACE tree iterator
+
+percorre (f, antecessor) // f=current
+
+  if f.isLeaf()
+	desenhaNo (f, antecessor)
+  else
+	nn = desenhaNo (f.conn, antecessor)
+	foreach (g: f.filhos())
+		percorre(g, nn)
+
+
+

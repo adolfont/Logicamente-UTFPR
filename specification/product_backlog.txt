@@ -3,3 +3,30 @@ Logicamente-UTFPR
 20. Desenhar graficamente uma árvore de análise sintática a partir de uma fórmula sintaticamente correta da lógica clássica de predicados
 25. Permitir a digitação dos símbolos utilizados nas fórmulas usando botões
 30. Verificar a correção sintática de fórmulas enquanto elas estão sendo digitadas
+
+mostrar a complexidade da fórmula
+mostrar a altura da fórmula
+mostrar a quantidade de átomos diferentes da fórmula
+mostrar a quantidade de conectivos diferentes da fórmula
+mostrar a fórmula com todos os parênteses exigidos pelas regras de formação
+mostrar a fórmula com o mínimo de parênteses possíveis
+
+Applet
+JNLP
+Script to setup everything and run tests
+
+Logic games
+ Sistema: p&q->r|s
+ Aluno: (p&q)->(r|s)
+ Sistema: WRONG
+ Aluno: p&q->(r|s)
+ Sistema: WRONG
+ Aluno: p&q->r|s
+ Sistema: RIGHT
+
+ Sistema: p&q->r|s
+ Aluno: (p&q)->(r|s)
+ Sistema: WRONG
+ Aluno: ((p&q)->(r|s))
+ Sistema: RIGHT
+
