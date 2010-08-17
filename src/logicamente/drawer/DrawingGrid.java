@@ -1,7 +1,6 @@
 package logicamente.drawer;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
 
 public class DrawingGrid {
@@ -94,10 +93,10 @@ public class DrawingGrid {
 	}
 
 	public void drawGridLines() {
-		for (int i = 1; i <= width; i++) {
+		for (int i = 0; i <= width; i++) {
 			graphics.drawLine(i * cellWidth, 0, i * cellWidth, height);
 		}
-		for (int i = 1; i <= height; i++) {
+		for (int i = 0; i <= height; i++) {
 			graphics.drawLine(0, i * cellHeight, width, i * cellHeight);
 		}
 	}
@@ -129,6 +128,10 @@ public class DrawingGrid {
 
 	private int calculateLineY(int y1) {
 		return calculateY(y1) + nodeDiameter / 2;
+	}
+
+	public void clear() {
+		graphics.clearRect(0, 0, width, height);
 	}
 
 }
