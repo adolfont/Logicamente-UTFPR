@@ -64,4 +64,15 @@ public class FormulasTest {
 		assertEquals(Formula.AND, cf3.getConnective());
 	}
 
+	@Test
+	public void testGetChildren(){
+		assertTrue(a1.getChildren().size()==0);
+		assertTrue(cf1.getChildren().size()==2);
+		assertTrue(cf2.getChildren().size()==2);
+
+		CompositeFormula nf1 = new CompositeFormula(Formula.NOT, a1);
+		assertTrue(nf1.getChildren().size()==1);
+}
+	
+
 }

@@ -2,6 +2,8 @@ package logicamente.drawer;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DrawingGrid {
 
@@ -15,6 +17,8 @@ public class DrawingGrid {
 	private int cellHeight;
 	private Color fillColor;
 	private Color foreColor;
+	private List<GridNode> nodes;
+	private GridNode root;
 
 	public DrawingGrid(Graphics graphics) {
 		this.graphics = graphics;
@@ -24,6 +28,7 @@ public class DrawingGrid {
 		this.gridHeight = 10;
 		this.fillColor = Color.WHITE;
 		this.foreColor = Color.BLACK;
+		nodes = new ArrayList<GridNode>();
 	}
 
 	public void setBounds(int width, int height) {
@@ -132,6 +137,30 @@ public class DrawingGrid {
 
 	public void clear() {
 		graphics.clearRect(0, 0, width, height);
+	}
+
+	public void add(GridNode node) {
+		if (root == null) {
+			root = node;
+		}
+		nodes.add(node);
+	}
+
+	public List<GridNode> getNodes() {
+		return nodes;
+	}
+
+	public GridNode getRootNode() {
+		return root;
+	}
+
+	public void drawTree() {
+		for (GridNode node: nodes){
+			drawNode(node.getX(), node.getY(), node.getSymbol());
+			if (node.getParent()!=null){
+				drawLine(node.getX(), node.getY(), node.getParent().getX(), node.getParent().getY());
+			}
+		}
 	}
 
 }

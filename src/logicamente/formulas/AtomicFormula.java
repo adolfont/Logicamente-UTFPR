@@ -1,8 +1,13 @@
 package logicamente.formulas;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 public class AtomicFormula implements Formula {
 	
 	private String atom;
+	
+	private static ArrayList<Formula> EMPTY = new ArrayList<Formula>();
 
 	public AtomicFormula(String string) {
 		this.atom=string;
@@ -26,5 +31,10 @@ public class AtomicFormula implements Formula {
 	@Override
 	public int getNegationDegree() {
 		return 0;
+	}
+
+	@Override
+	public Collection<Formula> getChildren() {
+		return EMPTY;
 	}
 }

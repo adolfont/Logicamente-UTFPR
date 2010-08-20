@@ -1,5 +1,8 @@
 package logicamente.formulas;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 public class CompositeFormula implements Formula {
 
 	private String conect;
@@ -62,6 +65,16 @@ public class CompositeFormula implements Formula {
 				+ getLeftFormula().getNegationDegree()
 				+ (getRightFormula() != null ? getRightFormula()
 						.getNegationDegree() : 0);
+	}
+
+	@Override
+	public Collection<Formula> getChildren() {
+		ArrayList<Formula> children = new ArrayList<Formula>();
+		children.add(0,getLeftFormula());
+		if (getRightFormula()!=null){
+			children.add(1,getRightFormula());
+		}
+		return children;
 	}
 
 }

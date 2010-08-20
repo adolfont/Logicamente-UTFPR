@@ -1,5 +1,7 @@
 package logicamente.formulas;
 
+import java.util.Collection;
+
 public interface Formula {
 
 	public static final String AND = "&";
@@ -9,5 +11,6 @@ public interface Formula {
 	int getComplexity();
 	int getHeight();
 	int getNegationDegree();
+	Collection<Formula> getChildren();
 	
 }

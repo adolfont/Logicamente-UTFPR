@@ -6,6 +6,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.JFrame;
@@ -31,18 +32,27 @@ public class SyntaxTreeDrawer extends JFrame implements ActionListener {
 	private Map<String, String> connectiveSymbolsMap;
 
 	private JPanel drawingPanel;
+	private JPanel topPanel;
+	private JLabel errorPanel;
+
+	private boolean debug = false;
 
 	public static void main(String[] args) {
-		String formula = "";
-
-		// if (args.length > 0) {
-		// formula = args[0];
 		SyntaxTreeDrawer std = new SyntaxTreeDrawer();
-		// std.setFormula(formula);
-		std.setVisible(true);
-		// } else {
-		// showCommandLineComments();
-		// }
+		if (args.length > 1) {
+			initFromCommandLine(args, std);
+		}
+	}
+
+	private static void initFromCommandLine(String[] args, SyntaxTreeDrawer std2) {
+		String formula;
+		if (args.length == 1) {
+			formula = args[0];
+			SyntaxTreeDrawer std = new SyntaxTreeDrawer();
+			std.setFormula(formula);
+		} else {
+			showCommandLineComments();
+		}
 	}
 
 	private static void showCommandLineComments() {
@@ -50,20 +60,13 @@ public class SyntaxTreeDrawer extends JFrame implements ActionListener {
 				.println("Usage: java -jar logicamente-utfpr.jar '<formula>'");
 		System.out.println();
 		System.out.println("Some examples:");
-		// alguns testes
 		System.out.println("java -jar logicamente-utfpr.jar 'A'");
-		// std.setFormula("A");
 		System.out.println("java -jar logicamente-utfpr.jar 'A->B'");
-		// std.setFormula("A->B");
 		System.out.println("java -jar logicamente-utfpr.jar 'A->B->C'");
-		// std.setFormula("A->B->C");
 		System.out
 				.println("java -jar logicamente-utfpr.jar 'A->B->C->D->E->F->G'");
-		// std.setFormula("A->B->C->D->E->F->G");
 		System.out
 				.println("java -jar logicamente-utfpr.jar '(!A->B->!!C)->D->E->F->G'");
-		// std.setFormula("(!A->B->!!C)->D->E->F->G");
-		// std.setFormula("(!A&B|!!C)->D->(E1&(E2&E3))->(F1&F2&F3)->G");
 		System.out.println();
 		System.out
 				.println("More information at http://github.com/adolfont/Logicamente-UTFPR/");
@@ -91,9 +94,6 @@ public class SyntaxTreeDrawer extends JFrame implements ActionListener {
 
 		setVisible(true);
 	}
-
-	private JPanel topPanel;
-	private JLabel errorPanel;
 
 	private void drawScreen() {
 
@@ -152,7 +152,7 @@ public class SyntaxTreeDrawer extends JFrame implements ActionListener {
 		}
 	}
 
-	private void paintSyntaxTree() {
+	public void calculatePositionOfTreeNodes() {
 		grid = new DrawingGrid(drawingPanel.getGraphics());
 		drawingPanel.getGraphics()
 				.clearRect(0, 0, drawingPanel.getBounds().width,
@@ -164,169 +164,82 @@ public class SyntaxTreeDrawer extends JFrame implements ActionListener {
 		grid.setGrid(formula.getComplexity() - formula.getNegationDegree(),
 				formula.getHeight() + 1);
 
-		// DEBUG ONLY
-		grid.drawGridLines();
+		if (debug)
+			grid.drawGridLines();
 
-		drawSyntaxTree_v2(0, 0, 1, 1, formula);
+		Interval xInterval = new Interval(1, formula.getComplexity()
+				- formula.getNegationDegree());
+		drawSyntaxTree(null, formula, xInterval, 1);
 	}
 
-	private void drawSyntaxTree_v2(int xPrev, int yPrev, int x, int y,
-			Formula formula) {
-		if (formula instanceof AtomicFormula) {
-			if (xPrev != 0) {
-				grid.drawLine(xPrev, yPrev, x, y);
-			}
-			grid.drawNode(x, y, formula.toString());
-		} else {
+	private void paintSyntaxTree() {
+		calculatePositionOfTreeNodes();
+		grid.drawTree();
+	}
+
+	private void drawSyntaxTree(GridNode parent, Formula formula,
+			Interval xInterval, int y) {
+		int x = xInterval.getXLeft() + getLeftSize(formula);
+		GridNode currentNode = new GridNode(x, y, getCurrentSymbol(formula));
+		currentNode.setParent(parent);
+		grid.add(currentNode);
+
+		drawSyntaxTree_leftSubformula(currentNode, formula, xInterval, x, y);
+		drawSyntaxTree_rightSubformula(currentNode, formula, xInterval, x, y);
+	}
+
+	private void drawSyntaxTree_leftSubformula(GridNode parentNode,
+			Formula formula, Interval interval, int x, int y) {
+		// poe na esquerda
+		if (formula instanceof CompositeFormula) {
 			CompositeFormula cf = (CompositeFormula) formula;
-			// se negação desenha abaixo
-			// se não for negação desenha dois
-			if (cf.getConnective() == Formula.NOT) {
-				x = x + getLeftSize(formula);
-				if (xPrev != 0) {
-					grid.drawLine(xPrev, yPrev, x, y);
-				}
-				// x = x + getLeftSize(formula);
-				grid.drawNode(x, y, getConnectiveSymbol(cf.getConnective()));
-				// x = x - getLeftSize(formula);
-				// drawSyntaxTree_v2(x, y, x, y + 1, cf.getLeftFormula());
-				if (cf.getLeftFormula() instanceof AtomicFormula) {
-					drawSyntaxTree_v2(x, y, x, y + 1, cf.getLeftFormula());
-				} else {
-					CompositeFormula cfLeft = (CompositeFormula) cf
-							.getLeftFormula();
-					if (cfLeft.getConnective() == Formula.NOT) {
+			String connective = cf.getConnective();
 
-					} else {
-						drawSyntaxTree_v2(x, y, x, y + 1, cf.getLeftFormula());
-					}
-				}
-
+			if (connective == Formula.NOT) {
+				// xLeft = o mesmo
+				// xRight= o mesmo
 			} else {
-				drawBinaryNode_in_SyntaxTree_v2(xPrev, yPrev, x, y, formula, cf
-						.getLeftFormula());
+				// xLeft = o mesmo
+				// xRight = x onde foi colocado o conectivo - 1
+				interval.setXRight(x - 1);
 			}
-		}
-	}
 
-	// private void drawSyntaxTree(int xPrev, int yPrev, int x, int y,
-	// Formula formula) {
-	// if (formula instanceof AtomicFormula) {
-	// if (xPrev != 0) {
-	// grid.drawLine(xPrev, yPrev, x, y);
-	// }
-	// grid.drawNode(x, y, formula.toString());
-	// } else {
-	// Formula left = (((CompositeFormula) formula).getLeftFormula());
-	// if (((CompositeFormula) formula).getConnective() == Formula.NOT) {
-	// drawNotNode_in_SyntaxTree(xPrev, yPrev, x, y, formula, left);
-	// } else {
-	// drawBinaryNode_in_SyntaxTree_v2(xPrev, yPrev, x, y, formula, left);
-	// }
-	// }
-	// }
-
-	private void drawBinaryNode_in_SyntaxTree_v2(int xPrev, int yPrev, int x,
-			int y, Formula formula, Formula left) {
-		Formula right = (((CompositeFormula) formula).getRightFormula());
-		if (xPrev != 0) {
-			// grid.drawLine(xPrev, yPrev, x + left.getComplexity()
-			// - left.getNegationDegree(), y);
-			grid.drawLine(xPrev, yPrev, x, y);
-		}
-		// grid.drawNode(x + left.getComplexity() - left.getNegationDegree(), y,
-		// ((CompositeFormula) formula).getConnective().toString());
-		grid.drawNode(x + left.getComplexity() - left.getNegationDegree(), y,
-				getConnectiveSymbol(((CompositeFormula) formula)
-						.getConnective()));
-
-		drawSyntaxTree_v2(x + left.getComplexity() - left.getNegationDegree(),
-				y, x, y + 1, left);
-		if (right != null)
-			drawSyntaxTree_v2(x + left.getComplexity()
-					- left.getNegationDegree(), y, x + left.getComplexity()
-					- left.getNegationDegree() + 1, y + 1, right);
-	}
-
-	// private void drawNotNode_in_SyntaxTree(int xPrev, int yPrev, int x, int
-	// y,
-	// Formula formula, Formula left) {
-	// if (xPrev != 0) {
-	// grid.drawLine(xPrev, yPrev, x, y);
-	// }
-	// // TODO testar com !(A&!B), !!(A&B), A->!!(A&B)
-	// // System.out.print(formula);
-	// // System.out.println("    X is " + x);
-	// // int newX = calculateX_For_A_NotNode(formula, x);
-	// // System.out.println("    should be " + newX);
-	//
-	// // TODO TENTAR TROCAR AS DUAS ABAIXO PELAS MAIS ABAIXO
-	// // grid.drawNode(x, y, getConnectiveSymbol(((CompositeFormula) formula)
-	// // .getConnective()));
-	// // drawSyntaxTree(x, y, x, y + 1, left);
-	//
-	// // TODO VERSAO ABAIXO - NEGACAO ABAIXO DE NEGACAO DA PROBLEMA
-	// grid.drawNode(x + getLeftSize(formula), y,
-	// getConnectiveSymbol(((CompositeFormula) formula)
-	// .getConnective()));
-	//
-	// if (left instanceof AtomicFormula) {
-	// drawSyntaxTree(x + getLeftSize(formula), y, x, y + 1, left);
-	// } else if (left instanceof CompositeFormula
-	// && ((CompositeFormula) left).getConnective() == Formula.NOT) {
-	// drawNotNode_in_SyntaxTree(x + getLeftSize(formula), y, x, y + 1,
-	// left, ((CompositeFormula) left).getLeftFormula());
-	// } else {
-	// drawSyntaxTree(x + getLeftSize(formula), y, x, y + 1, left);
-	// }
-	//
-	// }
-
-	private int calculateX_For_A_NotNode(Formula notFormula, int x) {
-		Formula f = notFormula;
-		while (true) {
-			if ((f instanceof CompositeFormula)
-					&& (((CompositeFormula) f).getConnective() == Formula.NOT)) {
-				f = ((CompositeFormula) f).getLeftFormula();
-			} else {
-				break;
-			}
-		}
-
-		// A || B&&C
-		// A || (B&&C)
-
-		System.out.println("Resulting f: " + f);
-		if (f instanceof CompositeFormula) {
-			return x
-					+ ((CompositeFormula) f).getLeftFormula().getComplexity()
-					- ((CompositeFormula) f).getLeftFormula()
-							.getNegationDegree();
+			drawSyntaxTree(parentNode, cf.getLeftFormula(), interval, y + 1);
 		} else {
-			return x;
+			// nao faz nada. Já fez o que tinha de fazer antes
 		}
 	}
 
-	// private void drawBinaryNode_in_SyntaxTree(int xPrev, int yPrev, int x,
-	// int y, Formula formula, Formula left) {
-	// Formula right = (((CompositeFormula) formula).getRightFormula());
-	// if (xPrev != 0) {
-	// grid.drawLine(xPrev, yPrev, x + left.getComplexity()
-	// - left.getNegationDegree(), y);
-	// }
-	// // grid.drawNode(x + left.getComplexity() - left.getNegationDegree(), y,
-	// // ((CompositeFormula) formula).getConnective().toString());
-	// grid.drawNode(x + left.getComplexity() - left.getNegationDegree(), y,
-	// getConnectiveSymbol(((CompositeFormula) formula)
-	// .getConnective()));
-	//
-	// drawSyntaxTree(x + left.getComplexity() - left.getNegationDegree(), y,
-	// x, y + 1, left);
-	// if (right != null)
-	// drawSyntaxTree(x + left.getComplexity() - left.getNegationDegree(),
-	// y, x + left.getComplexity() - left.getNegationDegree() + 1,
-	// y + 1, right);
-	// }
+	private void drawSyntaxTree_rightSubformula(GridNode parentNode,
+			Formula formula, Interval interval, int x, int y) {
+		// poe na direita
+		if (formula instanceof CompositeFormula) {
+			CompositeFormula cf = (CompositeFormula) formula;
+			String connective = cf.getConnective();
+
+			if (connective == Formula.NOT) {
+				// ja fez o que tinha de fazer
+			} else {
+				// xLeft = x onde foi colocado o conectivo + 1
+				interval.setXLeft(x + 1);
+				// xRight = o mesmo
+
+				drawSyntaxTree(parentNode, cf.getRightFormula(), interval,
+						y + 1);
+			}
+		} else {
+			// nao faz nada. Já fez o que tinha de fazer antes
+		}
+	}
+
+	private String getCurrentSymbol(Formula formula) {
+		if (formula instanceof AtomicFormula) {
+			return formula.toString();
+		} else {
+			return getConnectiveSymbol(((CompositeFormula) formula)
+					.getConnective());
+		}
+	}
 
 	private String getConnectiveSymbol(String connective) {
 		return connectiveSymbolsMap.get(connective);
@@ -351,6 +264,10 @@ public class SyntaxTreeDrawer extends JFrame implements ActionListener {
 			return cf.getLeftFormula().getComplexity()
 					- cf.getLeftFormula().getNegationDegree();
 		}
+	}
+
+	public List<GridNode> getTreeNodes() {
+		return grid.getNodes();
 	}
 
 }
