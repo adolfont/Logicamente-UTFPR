@@ -35,7 +35,7 @@ public class SyntaxTreeDrawer extends JFrame implements ActionListener {
 	private JPanel topPanel;
 	private JLabel errorPanel;
 
-	private boolean debug = false;
+	private boolean showGridLines = false;
 
 	public static void main(String[] args) {
 		SyntaxTreeDrawer std = new SyntaxTreeDrawer();
@@ -164,7 +164,7 @@ public class SyntaxTreeDrawer extends JFrame implements ActionListener {
 		grid.setGrid(formula.getComplexity() - formula.getNegationDegree(),
 				formula.getHeight() + 1);
 
-		if (debug)
+		if (showGridLines)
 			grid.drawGridLines();
 
 		Interval xInterval = new Interval(1, formula.getComplexity()
