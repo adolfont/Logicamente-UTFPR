@@ -35,7 +35,7 @@ public class SyntaxTreeDrawer extends JFrame implements ActionListener {
 	private JPanel topPanel;
 	private JLabel errorPanel;
 
-	private boolean showGridLines = false;
+	private boolean showGridLines = true;
 
 	public static void main(String[] args) {
 		SyntaxTreeDrawer std = new SyntaxTreeDrawer();
