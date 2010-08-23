@@ -6,16 +6,19 @@ Logicamente-UTFPR
 
 mostrar a complexidade da fórmula
 mostrar a altura da fórmula
+mostrar a fórmula com todos os parênteses exigidos pelas regras de formação
+
 mostrar a quantidade de átomos diferentes da fórmula
 mostrar a quantidade de conectivos diferentes da fórmula
-mostrar a fórmula com todos os parênteses exigidos pelas regras de formação
 mostrar a fórmula com o mínimo de parênteses possíveis
 
 Applet
-JNLP
+Java Web Start JNLP
+
 Script to setup everything and run tests
 
 Logic games
+Médio
  Sistema: p&q->r|s
  Aluno: (p&q)->(r|s)
  Sistema: WRONG
@@ -24,9 +27,13 @@ Logic games
  Aluno: p&q->r|s
  Sistema: RIGHT
 
+FÁCIL
  Sistema: p&q->r|s
  Aluno: (p&q)->(r|s)
  Sistema: WRONG
  Aluno: ((p&q)->(r|s))
  Sistema: RIGHT
 
+
+O aluno desenha a árvore e o sistema dá a fórmula
+O sistema dá a fórmula e o aluno desenha a árvore

@@ -39,16 +39,17 @@ public class SyntaxTreeDrawer extends JFrame implements ActionListener {
 
 	public static void main(String[] args) {
 		SyntaxTreeDrawer std = new SyntaxTreeDrawer();
-		if (args.length > 1) {
+//		System.out.println(args.length);
+		if (args.length >= 1) {
 			initFromCommandLine(args, std);
 		}
 	}
 
-	private static void initFromCommandLine(String[] args, SyntaxTreeDrawer std2) {
+	private static void initFromCommandLine(String[] args, SyntaxTreeDrawer std) {
 		String formula;
 		if (args.length == 1) {
 			formula = args[0];
-			SyntaxTreeDrawer std = new SyntaxTreeDrawer();
+			std = new SyntaxTreeDrawer();
 			std.setFormula(formula);
 		} else {
 			showCommandLineComments();
@@ -127,7 +128,7 @@ public class SyntaxTreeDrawer extends JFrame implements ActionListener {
 
 		getContentPane().add(errorPanel, BorderLayout.PAGE_END);
 
-		// pack();
+//		 pack();
 	}
 
 	public void setFormula(String string) {
@@ -135,6 +136,7 @@ public class SyntaxTreeDrawer extends JFrame implements ActionListener {
 		// System.out.println(result.parseCorrect());
 		if (result.parseCorrect()) {
 			formula = result.getFormula();
+//			System.out.println(formula);
 			errorPanel.setText("");
 		} else {
 			formula = null;
@@ -227,6 +229,7 @@ public class SyntaxTreeDrawer extends JFrame implements ActionListener {
 				drawSyntaxTree(parentNode, cf.getRightFormula(), interval,
 						y + 1);
 			}
+
 		} else {
 			// nao faz nada. Já fez o que tinha de fazer antes
 		}

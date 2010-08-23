@@ -48,6 +48,10 @@ public class SyntaxTreeDrawerAuxiliaryTests {
 		assertEquals(1, SyntaxTreeDrawer.getLeftSize(f4));
 	}
 
+	
+	// TODO simplificar os testes
+	// listar nos
+	// listar conexões entre os nos
 	@Test
 	public void testGetTreeNodes_for_an_AtomicFormula() {
 		std.setFormula("A");
@@ -105,7 +109,7 @@ public class SyntaxTreeDrawerAuxiliaryTests {
 			result += node.toString() + "-";
 		}
 
-		System.out.println("result: " + result);
+//		System.out.println("result: " + result);
 		return result;
 	}
 
