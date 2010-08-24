@@ -1,25 +1,18 @@
 Logicamente-UTFPR 
-10. Desenhar graficamente uma árvore de análise sintática (como definido por Huth e Ryan) a partir de uma fórmula sintaticamente correta da lógica clássica proposicional
-20. Desenhar graficamente uma árvore de análise sintática a partir de uma fórmula sintaticamente correta da lógica clássica de predicados
-25. Permitir a digitação dos símbolos utilizados nas fórmulas usando botões
-30. Verificar a correção sintática de fórmulas enquanto elas estão sendo digitadas
 
-mostrar a complexidade da fórmula
-mostrar a altura da fórmula
-mostrar a fórmula com todos os parênteses exigidos pelas regras de formação
 
-mostrar a quantidade de átomos diferentes da fórmula
-mostrar a quantidade de conectivos diferentes da fórmula
-mostrar a fórmula com o mínimo de parênteses possíveis
+TO DO (em ordem de prioridade)
 
-Applet
-Java Web Start JNLP
 
-Script to setup everything and run tests
+Verificar a correção sintática de fórmulas enquanto elas estão sendo digitadas
 
-Logic games
-Médio
- Sistema: p&q->r|s
+Desenhar graficamente uma árvore de análise sintática a partir de uma fórmula sintaticamente correta da lógica clássica de predicados
+
+Logic games #1 (nível médio em dificuldade de implementação)
+Comparar com o mínimo de parênteses
+Objetivo: o sistema dá uma fórmula com todos os parênteses e o aluno deve digitar a mesma fórmula com o mínimo de parênteses possível
+
+ Sistema: ((p&q)->(r|s))
  Aluno: (p&q)->(r|s)
  Sistema: WRONG
  Aluno: p&q->(r|s)
@@ -27,7 +20,30 @@ Médio
  Aluno: p&q->r|s
  Sistema: RIGHT
 
-FÁCIL
+
+DOING
+
+Permitir a digitação dos símbolos utilizados nas fórmulas usando botões
+
+Mostrar a complexidade da fórmula
+Mostrar a altura da fórmula
+Mostrar a fórmula com todos os parênteses exigidos pelas regras de formação
+
+Mostrar a quantidade de átomos diferentes da fórmula
+Mostrar a quantidade de conectivos diferentes da fórmula
+Mostrar a fórmula com o mínimo de parênteses possíveis
+
+Transformar em Applet
+Permitir donwload e execução direto da página com a tecnologia Java Web Start
+
+Generate/write an ANT script to setup everything and run tests
+
+O aluno desenha a árvore e o sistema dá a fórmula
+
+O sistema dá a fórmula e o aluno desenha a árvore
+
+Logic Games #2 (nível fácil em dificuldade de implementação)
+Objetivo: o sistema dá uma fórmula sem ou com poucos parênteses e o aluno deve digitar a mesma fórmula com o mínimo de parênteses possível
  Sistema: p&q->r|s
  Aluno: (p&q)->(r|s)
  Sistema: WRONG
@@ -35,5 +51,7 @@ FÁCIL
  Sistema: RIGHT
 
 
-O aluno desenha a árvore e o sistema dá a fórmula
-O sistema dá a fórmula e o aluno desenha a árvore
+DONE
+
+Desenhar graficamente uma árvore de análise sintática (como definido por Huth e Ryan) a partir de uma fórmula sintaticamente correta da lógica clássica proposicional
+
