@@ -60,10 +60,21 @@
         <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
         <antcall target="build"/>
     </target>
-    <target name="DrawingGridQuasiTest (1)">
-        <java classname="logicamente.drawer.DrawingGridQuasiTest" failonerror="true" fork="yes">
+    <target name="SyntaxTreeDrawerAuxiliaryTests.testGetTreeNodes_EvenMoreComplexCompositeFormula">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="logicamente.drawer.SyntaxTreeDrawerAuxiliaryTests" todir="${junit.output.dir}"/>
             <classpath refid="Logicamente-UTFPR.classpath"/>
-        </java>
+        </junit>
+    </target>
+    <target name="SyntaxTreeDrawerAuxiliaryTests.testGetTreeNodes_for_the_negation_of_a_ComplexCompositeFormula">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="logicamente.drawer.SyntaxTreeDrawerAuxiliaryTests" todir="${junit.output.dir}"/>
+            <classpath refid="Logicamente-UTFPR.classpath"/>
+        </junit>
     </target>
     <target name="SyntaxTreeDrawer">
         <java classname="logicamente.drawer.SyntaxTreeDrawer" failonerror="true" fork="yes">
@@ -76,11 +87,6 @@
             <formatter type="xml"/>
             <classpath refid="Logicamente-UTFPR.classpath"/>
         </junit>
-    </target>
-    <target name="DrawingTest">
-        <java classname="logicamente.drawer.DrawingTest" failonerror="true" fork="yes">
-            <classpath refid="Logicamente-UTFPR.classpath"/>
-        </java>
     </target>
     <target name="FormulaComplexityTest">
         <mkdir dir="${junit.output.dir}"/>
@@ -98,27 +104,27 @@
             <classpath refid="Logicamente-UTFPR.classpath"/>
         </junit>
     </target>
-    <target name="SyntaxTreeDrawerTest.testGetScreenPutsFormulasAndConnectivesInTheRightPlace">
+    <target name="SyntaxTreeDrawerAuxiliaryTests">
         <mkdir dir="${junit.output.dir}"/>
         <junit fork="yes" printsummary="withOutAndErr">
             <formatter type="xml"/>
-            <test name="logicamente.drawer.SyntaxTreeDrawerTest" todir="${junit.output.dir}"/>
+            <test name="logicamente.drawer.SyntaxTreeDrawerAuxiliaryTests" todir="${junit.output.dir}"/>
             <classpath refid="Logicamente-UTFPR.classpath"/>
         </junit>
     </target>
-    <target name="SyntaxTreeDrawerTest">
+    <target name="FormulasTest">
         <mkdir dir="${junit.output.dir}"/>
         <junit fork="yes" printsummary="withOutAndErr">
             <formatter type="xml"/>
-            <test name="logicamente.drawer.SyntaxTreeDrawerTest" todir="${junit.output.dir}"/>
+            <test name="logicamente.formulas.FormulasTest" todir="${junit.output.dir}"/>
             <classpath refid="Logicamente-UTFPR.classpath"/>
         </junit>
     </target>
-    <target name="DrawingGridQuasiTest">
+    <target name="SyntaxTreeDrawerAuxiliaryTests.testGetTreeNodes_MoreComplexCompositeFormula">
         <mkdir dir="${junit.output.dir}"/>
         <junit fork="yes" printsummary="withOutAndErr">
             <formatter type="xml"/>
-            <test name="logicamente.drawer.DrawingGridQuasiTest" todir="${junit.output.dir}"/>
+            <test name="logicamente.drawer.SyntaxTreeDrawerAuxiliaryTests" todir="${junit.output.dir}"/>
             <classpath refid="Logicamente-UTFPR.classpath"/>
         </junit>
     </target>
