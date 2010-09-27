@@ -34,8 +34,12 @@ public class SyntaxTreeDrawer extends JFrame implements ActionListener {
 	private JPanel drawingPanel;
 	private JPanel topPanel;
 	private JLabel errorPanel;
+	private JPanel infoPanel;
+	private JTextField complexityTextField;
+	private JTextField heightTextField;
+	private JTextField negativesTextField;
 
-	private boolean showGridLines = true;
+	private boolean showGridLines = false;
 
 	public static void main(String[] args) {
 		SyntaxTreeDrawer std = new SyntaxTreeDrawer();
@@ -118,6 +122,8 @@ public class SyntaxTreeDrawer extends JFrame implements ActionListener {
 		topPanel.setLayout(new GridLayout(2, 1));
 		topPanel.add(inputFormulaLabel);
 		topPanel.add(inputFormulaTextField);
+		
+		includeInfoPanel();
 
 		getContentPane().add(topPanel, BorderLayout.PAGE_START);
 		getContentPane().add(drawingPanel, BorderLayout.CENTER);
@@ -127,8 +133,34 @@ public class SyntaxTreeDrawer extends JFrame implements ActionListener {
 		errorPanel.setFont(errorPanel.getFont().deriveFont((float) 30.0));
 
 		getContentPane().add(errorPanel, BorderLayout.PAGE_END);
+		
+		JPanel endPanel = new JPanel();
+		endPanel.setLayout(new GridLayout(2, 1));
+		endPanel.add(errorPanel);
+		endPanel.add(infoPanel);
+		getContentPane().add(endPanel, BorderLayout.PAGE_END);
 
 //		 pack();
+	}
+
+	private void includeInfoPanel() {
+		infoPanel = new JPanel();
+		infoPanel.setLayout(new GridLayout(1, 6));
+		JLabel negativesLabel = new JLabel("Negações: ", JLabel.CENTER);
+		negativesTextField = new JTextField(4);
+		negativesTextField.setEditable(false);
+		JLabel heightLabel = new JLabel("Altura: ", JLabel.CENTER);
+		heightTextField = new JTextField(4);
+		heightTextField.setEditable(false);
+		JLabel complexityLabel = new JLabel("Complexidade: ", JLabel.CENTER);
+		complexityTextField = new JTextField(4);
+		complexityTextField.setEditable(false);
+		infoPanel.add(negativesLabel);
+		infoPanel.add(negativesTextField);
+		infoPanel.add(heightLabel);
+		infoPanel.add(heightTextField);
+		infoPanel.add(complexityLabel);
+		infoPanel.add(complexityTextField);
 	}
 
 	public void setFormula(String string) {
@@ -145,10 +177,25 @@ public class SyntaxTreeDrawer extends JFrame implements ActionListener {
 		}
 	}
 
+	private void showInfoValues(){
+		if(formula != null){
+			complexityTextField.setText("" + formula.getComplexity());
+			heightTextField.setText("" + formula.getHeight());
+			negativesTextField.setText("" + formula.getNegationDegree());
+		}else{
+			complexityTextField.setText("");
+			heightTextField.setText("");
+			negativesTextField.setText("");
+		}
+	}
+	
 	public void paint(Graphics g) {
 		if (formula != null) {
 			paintSyntaxTree();
+			showInfoValues();
 			topPanel.repaint();
+			errorPanel.repaint();
+			infoPanel.repaint();
 		} else {
 			errorPanel.repaint();
 		}

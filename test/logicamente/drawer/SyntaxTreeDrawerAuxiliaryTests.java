@@ -13,6 +13,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class SyntaxTreeDrawerAuxiliaryTests {
+	
+	// TODO refactor the use of DSL
+	// the descrition of a tree for A&B could be 
+	// "A(1,2)&(2,1)B(3,2)"
+	// plus
+	// "(1,2,2,1),(3,2,2,1)"
 
 	Formula f1, f2, f3, f4;
 	Parser parser;

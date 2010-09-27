@@ -20,6 +20,17 @@ Objetivo: o sistema dá uma fórmula com todos os parênteses e o aluno deve dig
  Aluno: p&q->r|s
  Sistema: RIGHT
 
+Exemplo de Tela 
+ -> Help
+     describe the syntax
+  -> About
+Parse Tree
+Complexity
+Subformulas
+Width
+Height
+
+
 
 DOING
 
