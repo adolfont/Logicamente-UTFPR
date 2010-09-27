@@ -246,8 +246,8 @@ public class SyntaxTreeDrawer extends JFrame implements ActionListener {
 		btnOr.setToolTipText("Or");
 		btnNot.setToolTipText("Not");
 
-		btnAnd.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-		btnAnd.setText("And");
+//		btnAnd.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+		btnAnd.setText(connectiveSymbolsMap.get(Formula.AND));
 		btnAnd.setAlignmentY(0.0F);
 		btnAnd.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 		btnAnd.addMouseListener(new MouseAdapter() {
@@ -256,8 +256,8 @@ public class SyntaxTreeDrawer extends JFrame implements ActionListener {
 			}
 		});
 
-		btnOr.setFont(new java.awt.Font("Tahoma", 1, 11));
-		btnOr.setText("Or");
+//		btnOr.setFont(new java.awt.Font("Tahoma", 1, 11));
+		btnOr.setText(connectiveSymbolsMap.get(Formula.OR));
 		btnOr.setAlignmentY(0.0F);
 		btnOr.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 		btnOr.addMouseListener(new MouseAdapter() {
@@ -266,8 +266,8 @@ public class SyntaxTreeDrawer extends JFrame implements ActionListener {
 			}
 		});
 
-		btnNot.setFont(new java.awt.Font("Tahoma", 1, 11));
-		btnNot.setText("Not");
+//		btnNot.setFont(new java.awt.Font("Tahoma", 1, 11));
+		btnNot.setText(connectiveSymbolsMap.get(Formula.NOT));
 		btnNot.setAlignmentY(0.0F);
 		btnNot.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 		btnNot.addMouseListener(new MouseAdapter() {
@@ -276,8 +276,8 @@ public class SyntaxTreeDrawer extends JFrame implements ActionListener {
 			}
 		});
 
-		btnImplies.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-		btnImplies.setText("Implies");
+//		btnImplies.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+		btnImplies.setText(connectiveSymbolsMap.get(Formula.IMPLIES));
 		btnImplies.setAlignmentY(0.0F);
 		btnImplies.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 		btnImplies.addMouseListener(new MouseAdapter() {
