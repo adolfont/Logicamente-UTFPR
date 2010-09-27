@@ -5,14 +5,22 @@ import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.BorderFactory;
+import javax.swing.GroupLayout;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.LayoutStyle;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 import logicamente.formulas.AtomicFormula;
 import logicamente.formulas.CompositeFormula;
@@ -33,17 +41,26 @@ public class SyntaxTreeDrawer extends JFrame implements ActionListener {
 
 	private JPanel drawingPanel;
 	private JPanel topPanel;
-	private JLabel errorPanel;
 	private JPanel infoPanel;
+	private JLabel errorPanel;
+	private JPanel formulaInfoPanel;
 	private JTextField complexityTextField;
 	private JTextField heightTextField;
 	private JTextField negativesTextField;
+
+	private javax.swing.JLabel inputFormulaLabel;
+	private javax.swing.JTextField inputFormulaTextField;
+
+	private javax.swing.JButton btnAnd;
+	private javax.swing.JButton btnImplies;
+	private javax.swing.JButton btnNot;
+	private javax.swing.JButton btnOr;
 
 	private boolean showGridLines = false;
 
 	public static void main(String[] args) {
 		SyntaxTreeDrawer std = new SyntaxTreeDrawer();
-//		System.out.println(args.length);
+		// System.out.println(args.length);
 		if (args.length >= 1) {
 			initFromCommandLine(args, std);
 		}
@@ -100,52 +117,196 @@ public class SyntaxTreeDrawer extends JFrame implements ActionListener {
 		setVisible(true);
 	}
 
+	private void btnClick(String st) {
+		inputFormulaTextField.setText(inputFormulaTextField.getText() + st);
+		inputFormulaTextField.grabFocus();
+	}
+
 	private void drawScreen() {
 
 		if (drawingPanel == null) {
 			drawingPanel = new JPanel();
 		}
 
-		JLabel inputFormulaLabel = new JLabel();
-		inputFormulaLabel.setFont(inputFormulaLabel.getFont().deriveFont(
-				(float) 30.0));
-		JTextField inputFormulaTextField = new JTextField(30);
-		inputFormulaTextField.setFont(inputFormulaTextField.getFont()
-				.deriveFont((float) 30.0));
-		inputFormulaTextField.addActionListener(this);
-		inputFormulaLabel.setText("Formula: ");
-		inputFormulaTextField.setText("");
-
+		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 		getContentPane().setLayout(new BorderLayout());
 
 		topPanel = new JPanel();
+
+		includeFormulaInputArea();
+		addConnectiveButtons();
+		setTopAndDrawingPanelProperties();
+		includeFormulaInfoPanel();
+		includeTopLevelInfoPanel();
+
+		JPanel topLevelPanel = createComplexLayout();
+		getContentPane().add(topLevelPanel, BorderLayout.CENTER);
+		getContentPane().add(infoPanel, BorderLayout.SOUTH);
+	}
+
+	private void setTopAndDrawingPanelProperties() {
 		topPanel.setLayout(new GridLayout(2, 1));
 		topPanel.add(inputFormulaLabel);
 		topPanel.add(inputFormulaTextField);
-		
-		includeInfoPanel();
-
-		getContentPane().add(topPanel, BorderLayout.PAGE_START);
-		getContentPane().add(drawingPanel, BorderLayout.CENTER);
+		topPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 		drawingPanel.setBounds(0, 0, 500, 500);
-
-		errorPanel = new JLabel("", JLabel.CENTER);
-		errorPanel.setFont(errorPanel.getFont().deriveFont((float) 30.0));
-
-		getContentPane().add(errorPanel, BorderLayout.PAGE_END);
-		
-		JPanel endPanel = new JPanel();
-		endPanel.setLayout(new GridLayout(2, 1));
-		endPanel.add(errorPanel);
-		endPanel.add(infoPanel);
-		getContentPane().add(endPanel, BorderLayout.PAGE_END);
-
-//		 pack();
 	}
 
-	private void includeInfoPanel() {
+	private void includeTopLevelInfoPanel() {
 		infoPanel = new JPanel();
-		infoPanel.setLayout(new GridLayout(1, 6));
+		errorPanel = new JLabel("", JLabel.CENTER);
+		errorPanel.setFont(infoPanel.getFont().deriveFont((float) 30.0));
+		infoPanel.setLayout(new GridLayout(2, 1));
+		infoPanel.add(errorPanel);
+		infoPanel.add(formulaInfoPanel);
+	}
+
+	private JPanel createComplexLayout() {
+		GroupLayout topPanelLayout = new GroupLayout(topPanel);
+		topPanel.setLayout(topPanelLayout);
+		topPanelLayout.setHorizontalGroup(topPanelLayout.createParallelGroup(
+				GroupLayout.Alignment.LEADING).addGroup(
+				topPanelLayout.createSequentialGroup().addComponent(
+						inputFormulaLabel)
+						.addContainerGap(551, Short.MAX_VALUE)).addComponent(
+				inputFormulaTextField, GroupLayout.DEFAULT_SIZE, 632,
+				Short.MAX_VALUE).addGroup(
+				topPanelLayout.createSequentialGroup().addGap(191, 191, 191)
+						.addComponent(btnImplies, GroupLayout.DEFAULT_SIZE, 54,
+								Short.MAX_VALUE).addPreferredGap(
+								ComponentPlacement.RELATED).addComponent(
+								btnAnd, GroupLayout.DEFAULT_SIZE, 54,
+								Short.MAX_VALUE).addPreferredGap(
+								ComponentPlacement.RELATED).addComponent(btnOr,
+								GroupLayout.DEFAULT_SIZE, 54, Short.MAX_VALUE)
+						.addPreferredGap(ComponentPlacement.UNRELATED)
+						.addComponent(btnNot, GroupLayout.DEFAULT_SIZE, 54,
+								Short.MAX_VALUE).addContainerGap(203,
+								Short.MAX_VALUE)));
+		topPanelLayout.setVerticalGroup(topPanelLayout.createParallelGroup(
+				GroupLayout.Alignment.LEADING).addGroup(
+				topPanelLayout.createSequentialGroup().addComponent(
+						inputFormulaLabel).addPreferredGap(
+						ComponentPlacement.RELATED).addComponent(
+						inputFormulaTextField, GroupLayout.PREFERRED_SIZE, 42,
+						GroupLayout.PREFERRED_SIZE).addPreferredGap(
+						ComponentPlacement.RELATED).addGroup(
+						topPanelLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(btnNot,
+										GroupLayout.PREFERRED_SIZE, 35,
+										GroupLayout.PREFERRED_SIZE)
+								.addComponent(btnOr,
+										GroupLayout.PREFERRED_SIZE, 35,
+										GroupLayout.PREFERRED_SIZE)
+								.addComponent(btnAnd,
+										GroupLayout.PREFERRED_SIZE, 35,
+										GroupLayout.PREFERRED_SIZE)
+								.addComponent(btnImplies,
+										GroupLayout.PREFERRED_SIZE, 35,
+										GroupLayout.PREFERRED_SIZE))
+						.addContainerGap(GroupLayout.DEFAULT_SIZE,
+								Short.MAX_VALUE)));
+		drawingPanel.setBorder(BorderFactory
+				.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+		GroupLayout drawingPanelLayout = new javax.swing.GroupLayout(
+				drawingPanel);
+		drawingPanel.setLayout(drawingPanelLayout);
+
+		JPanel topLevelPanel = new JPanel();
+		GroupLayout layout = new GroupLayout(topLevelPanel);
+		topLevelPanel.setLayout(layout);
+		layout.setHorizontalGroup(layout.createParallelGroup(
+				GroupLayout.Alignment.LEADING).addComponent(topPanel,
+				GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
+				Short.MAX_VALUE).addComponent(drawingPanel,
+				GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
+				Short.MAX_VALUE));
+		layout.setVerticalGroup(layout.createParallelGroup(
+				GroupLayout.Alignment.LEADING).addGroup(
+				layout.createSequentialGroup().addComponent(topPanel,
+						GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+						GroupLayout.PREFERRED_SIZE).addPreferredGap(
+						LayoutStyle.ComponentPlacement.RELATED).addComponent(
+						drawingPanel, GroupLayout.DEFAULT_SIZE,
+						GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
+
+		return topLevelPanel;
+	}
+
+	private void addConnectiveButtons() {
+
+		btnAnd = new JButton();
+		btnOr = new JButton();
+		btnNot = new JButton();
+		btnImplies = new JButton();
+
+		btnImplies.setToolTipText("Implies");
+		btnAnd.setToolTipText("And");
+		btnOr.setToolTipText("Or");
+		btnNot.setToolTipText("Not");
+
+		btnAnd.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+		btnAnd.setText("And");
+		btnAnd.setAlignmentY(0.0F);
+		btnAnd.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+		btnAnd.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent evt) {
+				btnClick(Formula.AND);
+			}
+		});
+
+		btnOr.setFont(new java.awt.Font("Tahoma", 1, 11));
+		btnOr.setText("Or");
+		btnOr.setAlignmentY(0.0F);
+		btnOr.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+		btnOr.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent evt) {
+				btnClick(Formula.OR);
+			}
+		});
+
+		btnNot.setFont(new java.awt.Font("Tahoma", 1, 11));
+		btnNot.setText("Not");
+		btnNot.setAlignmentY(0.0F);
+		btnNot.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+		btnNot.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent evt) {
+				btnClick(Formula.NOT);
+			}
+		});
+
+		btnImplies.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+		btnImplies.setText("Implies");
+		btnImplies.setAlignmentY(0.0F);
+		btnImplies.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+		btnImplies.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent evt) {
+				btnClick(Formula.IMPLIES);
+			}
+		});
+	}
+
+	private void includeFormulaInputArea() {
+		inputFormulaLabel = new JLabel();
+		// inputFormulaLabel.setFont(inputFormulaLabel.getFont().deriveFont((float)
+		// 30.0));
+		inputFormulaLabel.setFont(new java.awt.Font("Tahoma", 1, 18));
+		inputFormulaLabel.setText("Fórmula: ");
+
+		inputFormulaTextField = new JTextField(30);
+		// inputFormulaTextField.setFont(inputFormulaTextField.getFont().deriveFont((float)
+		// 30.0));
+		inputFormulaTextField.setFont(new java.awt.Font("Verdana", 1, 24));
+		inputFormulaTextField.addActionListener(this);
+		inputFormulaTextField.setText("");
+		inputFormulaTextField
+				.setToolTipText("Press Enter key to generate a tree!");
+	}
+
+	private void includeFormulaInfoPanel() {
+		formulaInfoPanel = new JPanel();
+		formulaInfoPanel.setLayout(new GridLayout(1, 6));
 		JLabel negativesLabel = new JLabel("Negações: ", JLabel.CENTER);
 		negativesTextField = new JTextField(4);
 		negativesTextField.setEditable(false);
@@ -155,12 +316,12 @@ public class SyntaxTreeDrawer extends JFrame implements ActionListener {
 		JLabel complexityLabel = new JLabel("Complexidade: ", JLabel.CENTER);
 		complexityTextField = new JTextField(4);
 		complexityTextField.setEditable(false);
-		infoPanel.add(negativesLabel);
-		infoPanel.add(negativesTextField);
-		infoPanel.add(heightLabel);
-		infoPanel.add(heightTextField);
-		infoPanel.add(complexityLabel);
-		infoPanel.add(complexityTextField);
+		formulaInfoPanel.add(negativesLabel);
+		formulaInfoPanel.add(negativesTextField);
+		formulaInfoPanel.add(heightLabel);
+		formulaInfoPanel.add(heightTextField);
+		formulaInfoPanel.add(complexityLabel);
+		formulaInfoPanel.add(complexityTextField);
 	}
 
 	public void setFormula(String string) {
@@ -168,37 +329,40 @@ public class SyntaxTreeDrawer extends JFrame implements ActionListener {
 		// System.out.println(result.parseCorrect());
 		if (result.parseCorrect()) {
 			formula = result.getFormula();
-//			System.out.println(formula);
+			// System.out.println(formula);
 			errorPanel.setText("");
 		} else {
 			formula = null;
-			grid.clear();
+			if (grid != null)
+				grid.clear();
 			errorPanel.setText("Syntax error");
 		}
 	}
 
-	private void showInfoValues(){
-		if(formula != null){
+	private void showInfoValues() {
+		if (formula != null) {
 			complexityTextField.setText("" + formula.getComplexity());
 			heightTextField.setText("" + formula.getHeight());
 			negativesTextField.setText("" + formula.getNegationDegree());
-		}else{
+		} else {
 			complexityTextField.setText("");
 			heightTextField.setText("");
 			negativesTextField.setText("");
 		}
 	}
-	
+
 	public void paint(Graphics g) {
 		if (formula != null) {
 			paintSyntaxTree();
-			showInfoValues();
-			topPanel.repaint();
-			errorPanel.repaint();
-			infoPanel.repaint();
 		} else {
-			errorPanel.repaint();
+			drawingPanel.repaint();
 		}
+		showInfoValues();
+		topPanel.repaint();
+		infoPanel.repaint();
+		errorPanel.repaint();
+		formulaInfoPanel.repaint();
+
 	}
 
 	public void calculatePositionOfTreeNodes() {
@@ -295,12 +459,6 @@ public class SyntaxTreeDrawer extends JFrame implements ActionListener {
 		return connectiveSymbolsMap.get(connective);
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		setFormula(e.getActionCommand());
-		repaint();
-	}
-
 	public static int getLeftSize(Formula f) {
 		if (f instanceof AtomicFormula) {
 			return 0;
@@ -318,6 +476,12 @@ public class SyntaxTreeDrawer extends JFrame implements ActionListener {
 
 	public List<GridNode> getTreeNodes() {
 		return grid.getNodes();
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		setFormula(e.getActionCommand());
+		repaint();
 	}
 
 }
