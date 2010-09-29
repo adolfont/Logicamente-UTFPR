@@ -206,8 +206,8 @@ public class SyntaxTreeDrawer extends JFrame implements ActionListener {
 										GroupLayout.PREFERRED_SIZE))
 						.addContainerGap(GroupLayout.DEFAULT_SIZE,
 								Short.MAX_VALUE)));
-		drawingPanel.setBorder(BorderFactory
-				.createLineBorder(new java.awt.Color(0, 0, 0)));
+//		drawingPanel.setBorder(BorderFactory
+//				.createLineBorder(new java.awt.Color(0, 0, 0)));
 
 		GroupLayout drawingPanelLayout = new javax.swing.GroupLayout(
 				drawingPanel);
