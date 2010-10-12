@@ -1,6 +1,7 @@
 package logicamente.drawer;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -11,15 +12,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import logicamente.formulas.AtomicFormula;
@@ -56,7 +60,9 @@ public class SyntaxTreeDrawer extends JFrame implements ActionListener {
 	private javax.swing.JButton btnNot;
 	private javax.swing.JButton btnOr;
 
-	private boolean showGridLines = false;
+	private JMenuBar menuBar;
+
+	private boolean showGridLines = true;
 
 	public static void main(String[] args) {
 		SyntaxTreeDrawer std = new SyntaxTreeDrawer();
@@ -112,6 +118,8 @@ public class SyntaxTreeDrawer extends JFrame implements ActionListener {
 		connectiveSymbolsMap.put(Formula.OR, "∨");
 		connectiveSymbolsMap.put(Formula.IMPLIES, "→");
 
+		addMenu();
+
 		drawScreen();
 
 		setVisible(true);
@@ -164,50 +172,74 @@ public class SyntaxTreeDrawer extends JFrame implements ActionListener {
 	private JPanel createComplexLayout() {
 		GroupLayout topPanelLayout = new GroupLayout(topPanel);
 		topPanel.setLayout(topPanelLayout);
-		topPanelLayout.setHorizontalGroup(topPanelLayout.createParallelGroup(
-				GroupLayout.Alignment.LEADING).addGroup(
-				topPanelLayout.createSequentialGroup().addComponent(
-						inputFormulaLabel)
-						.addContainerGap(551, Short.MAX_VALUE)).addComponent(
-				inputFormulaTextField, GroupLayout.DEFAULT_SIZE, 632,
-				Short.MAX_VALUE).addGroup(
-				topPanelLayout.createSequentialGroup().addGap(191, 191, 191)
-						.addComponent(btnImplies, GroupLayout.DEFAULT_SIZE, 54,
-								Short.MAX_VALUE).addPreferredGap(
-								ComponentPlacement.RELATED).addComponent(
-								btnAnd, GroupLayout.DEFAULT_SIZE, 54,
-								Short.MAX_VALUE).addPreferredGap(
-								ComponentPlacement.RELATED).addComponent(btnOr,
-								GroupLayout.DEFAULT_SIZE, 54, Short.MAX_VALUE)
-						.addPreferredGap(ComponentPlacement.UNRELATED)
-						.addComponent(btnNot, GroupLayout.DEFAULT_SIZE, 54,
-								Short.MAX_VALUE).addContainerGap(203,
-								Short.MAX_VALUE)));
-		topPanelLayout.setVerticalGroup(topPanelLayout.createParallelGroup(
-				GroupLayout.Alignment.LEADING).addGroup(
-				topPanelLayout.createSequentialGroup().addComponent(
-						inputFormulaLabel).addPreferredGap(
-						ComponentPlacement.RELATED).addComponent(
-						inputFormulaTextField, GroupLayout.PREFERRED_SIZE, 42,
-						GroupLayout.PREFERRED_SIZE).addPreferredGap(
-						ComponentPlacement.RELATED).addGroup(
-						topPanelLayout.createParallelGroup(Alignment.BASELINE)
-								.addComponent(btnNot,
-										GroupLayout.PREFERRED_SIZE, 35,
-										GroupLayout.PREFERRED_SIZE)
-								.addComponent(btnOr,
-										GroupLayout.PREFERRED_SIZE, 35,
-										GroupLayout.PREFERRED_SIZE)
-								.addComponent(btnAnd,
-										GroupLayout.PREFERRED_SIZE, 35,
-										GroupLayout.PREFERRED_SIZE)
+		topPanelLayout.setHorizontalGroup(topPanelLayout
+				.createParallelGroup(GroupLayout.Alignment.LEADING)
+				.addGroup(
+						topPanelLayout.createSequentialGroup()
+								.addComponent(inputFormulaLabel)
+								.addContainerGap(551, Short.MAX_VALUE))
+				.addComponent(inputFormulaTextField, GroupLayout.DEFAULT_SIZE,
+						632, Short.MAX_VALUE)
+				.addGroup(
+						topPanelLayout
+								.createSequentialGroup()
+								.addGap(191, 191, 191)
 								.addComponent(btnImplies,
-										GroupLayout.PREFERRED_SIZE, 35,
-										GroupLayout.PREFERRED_SIZE))
-						.addContainerGap(GroupLayout.DEFAULT_SIZE,
-								Short.MAX_VALUE)));
-//		drawingPanel.setBorder(BorderFactory
-//				.createLineBorder(new java.awt.Color(0, 0, 0)));
+										GroupLayout.DEFAULT_SIZE, 54,
+										Short.MAX_VALUE)
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addComponent(btnAnd, GroupLayout.DEFAULT_SIZE,
+										54, Short.MAX_VALUE)
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addComponent(btnOr, GroupLayout.DEFAULT_SIZE,
+										54, Short.MAX_VALUE)
+								.addPreferredGap(ComponentPlacement.UNRELATED)
+								.addComponent(btnNot, GroupLayout.DEFAULT_SIZE,
+										54, Short.MAX_VALUE)
+								.addContainerGap(203, Short.MAX_VALUE)));
+		topPanelLayout
+				.setVerticalGroup(topPanelLayout
+						.createParallelGroup(GroupLayout.Alignment.LEADING)
+						.addGroup(
+								topPanelLayout
+										.createSequentialGroup()
+										.addComponent(inputFormulaLabel)
+										.addPreferredGap(
+												ComponentPlacement.RELATED)
+										.addComponent(inputFormulaTextField,
+												GroupLayout.PREFERRED_SIZE, 42,
+												GroupLayout.PREFERRED_SIZE)
+										.addPreferredGap(
+												ComponentPlacement.RELATED)
+										.addGroup(
+												topPanelLayout
+														.createParallelGroup(
+																Alignment.BASELINE)
+														.addComponent(
+																btnNot,
+																GroupLayout.PREFERRED_SIZE,
+																35,
+																GroupLayout.PREFERRED_SIZE)
+														.addComponent(
+																btnOr,
+																GroupLayout.PREFERRED_SIZE,
+																35,
+																GroupLayout.PREFERRED_SIZE)
+														.addComponent(
+																btnAnd,
+																GroupLayout.PREFERRED_SIZE,
+																35,
+																GroupLayout.PREFERRED_SIZE)
+														.addComponent(
+																btnImplies,
+																GroupLayout.PREFERRED_SIZE,
+																35,
+																GroupLayout.PREFERRED_SIZE))
+										.addContainerGap(
+												GroupLayout.DEFAULT_SIZE,
+												Short.MAX_VALUE)));
+		// drawingPanel.setBorder(BorderFactory
+		// .createLineBorder(new java.awt.Color(0, 0, 0)));
 
 		GroupLayout drawingPanelLayout = new javax.swing.GroupLayout(
 				drawingPanel);
@@ -216,20 +248,26 @@ public class SyntaxTreeDrawer extends JFrame implements ActionListener {
 		JPanel topLevelPanel = new JPanel();
 		GroupLayout layout = new GroupLayout(topLevelPanel);
 		topLevelPanel.setLayout(layout);
-		layout.setHorizontalGroup(layout.createParallelGroup(
-				GroupLayout.Alignment.LEADING).addComponent(topPanel,
-				GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
-				Short.MAX_VALUE).addComponent(drawingPanel,
-				GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
-				Short.MAX_VALUE));
+		layout.setHorizontalGroup(layout
+				.createParallelGroup(GroupLayout.Alignment.LEADING)
+				.addComponent(topPanel, GroupLayout.DEFAULT_SIZE,
+						GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+				.addComponent(drawingPanel, GroupLayout.DEFAULT_SIZE,
+						GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE));
 		layout.setVerticalGroup(layout.createParallelGroup(
-				GroupLayout.Alignment.LEADING).addGroup(
-				layout.createSequentialGroup().addComponent(topPanel,
-						GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-						GroupLayout.PREFERRED_SIZE).addPreferredGap(
-						LayoutStyle.ComponentPlacement.RELATED).addComponent(
-						drawingPanel, GroupLayout.DEFAULT_SIZE,
-						GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
+				GroupLayout.Alignment.LEADING)
+				.addGroup(
+						layout.createSequentialGroup()
+								.addComponent(topPanel,
+										GroupLayout.PREFERRED_SIZE,
+										GroupLayout.DEFAULT_SIZE,
+										GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(
+										LayoutStyle.ComponentPlacement.RELATED)
+								.addComponent(drawingPanel,
+										GroupLayout.DEFAULT_SIZE,
+										GroupLayout.DEFAULT_SIZE,
+										Short.MAX_VALUE)));
 
 		return topLevelPanel;
 	}
@@ -246,7 +284,7 @@ public class SyntaxTreeDrawer extends JFrame implements ActionListener {
 		btnOr.setToolTipText("Or");
 		btnNot.setToolTipText("Not");
 
-//		btnAnd.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+		// btnAnd.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
 		btnAnd.setText(connectiveSymbolsMap.get(Formula.AND));
 		btnAnd.setAlignmentY(0.0F);
 		btnAnd.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -256,7 +294,7 @@ public class SyntaxTreeDrawer extends JFrame implements ActionListener {
 			}
 		});
 
-//		btnOr.setFont(new java.awt.Font("Tahoma", 1, 11));
+		// btnOr.setFont(new java.awt.Font("Tahoma", 1, 11));
 		btnOr.setText(connectiveSymbolsMap.get(Formula.OR));
 		btnOr.setAlignmentY(0.0F);
 		btnOr.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -266,7 +304,7 @@ public class SyntaxTreeDrawer extends JFrame implements ActionListener {
 			}
 		});
 
-//		btnNot.setFont(new java.awt.Font("Tahoma", 1, 11));
+		// btnNot.setFont(new java.awt.Font("Tahoma", 1, 11));
 		btnNot.setText(connectiveSymbolsMap.get(Formula.NOT));
 		btnNot.setAlignmentY(0.0F);
 		btnNot.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -276,7 +314,7 @@ public class SyntaxTreeDrawer extends JFrame implements ActionListener {
 			}
 		});
 
-//		btnImplies.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+		// btnImplies.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
 		btnImplies.setText(connectiveSymbolsMap.get(Formula.IMPLIES));
 		btnImplies.setAlignmentY(0.0F);
 		btnImplies.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -362,7 +400,7 @@ public class SyntaxTreeDrawer extends JFrame implements ActionListener {
 		infoPanel.repaint();
 		errorPanel.repaint();
 		formulaInfoPanel.repaint();
-
+		menuBar.repaint();
 	}
 
 	public void calculatePositionOfTreeNodes() {
@@ -388,6 +426,21 @@ public class SyntaxTreeDrawer extends JFrame implements ActionListener {
 	private void paintSyntaxTree() {
 		calculatePositionOfTreeNodes();
 		grid.drawTree();
+	}
+
+	private void paintNewSyntaxTree(int largura, int altura) {
+		grid = new DrawingGrid(drawingPanel.getGraphics());
+		drawingPanel.getGraphics()
+				.clearRect(0, 0, drawingPanel.getBounds().width,
+						drawingPanel.getBounds().height);
+
+		grid.setBounds(drawingPanel.getBounds().width,
+				drawingPanel.getBounds().height);
+		grid.setNodeDiameter(50);
+		grid.setGrid(largura, altura);
+
+		if (showGridLines)
+			grid.drawGridLines();
 	}
 
 	private void drawSyntaxTree(GridNode parent, Formula formula,
@@ -482,6 +535,94 @@ public class SyntaxTreeDrawer extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		setFormula(e.getActionCommand());
 		repaint();
+	}
+
+	public void addMenu() {
+		// barra do menu
+		menuBar = new JMenuBar();
+		// novo Menu
+		JMenu menuNovo = new JMenu("Novo");
+		// item do menu
+		JMenuItem menuNovaFormula = new JMenuItem("Nova Formula");
+		menuNovaFormula.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Component source = (Component) e.getSource();
+
+				JTextField widthField = new JTextField("3");
+				JTextField heightField = new JTextField("3");
+				Object[] message = new Object[] { "Largura: ", widthField,
+						"Altura: ", heightField };
+
+				int response = JOptionPane.showConfirmDialog(source, message,
+						"Nova Formula", JOptionPane.OK_CANCEL_OPTION);
+				if (response == JOptionPane.OK_OPTION) {
+					int width = Integer.parseInt(widthField.getText());
+					int height = Integer.parseInt(heightField.getText());
+
+					paintNewSyntaxTree(width, height);
+				}
+			}
+		});
+
+		JMenuItem menuNovoNo = new JMenuItem("Novo Nó");
+		menuNovoNo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Component source = (Component) e.getSource();
+				JTextField xField = new JTextField("1");
+				JTextField yField = new JTextField("1");
+				JTextField valueField = new JTextField("valor");
+				Object[] message = new Object[] { "X: ", xField, "Y: ", yField,
+						"Valor: ", valueField };
+
+				int response = JOptionPane.showConfirmDialog(source, message,
+						"Novo No", JOptionPane.OK_CANCEL_OPTION);
+				if (response == JOptionPane.OK_OPTION) {
+					int x = Integer.parseInt(xField.getText());
+					int y = Integer.parseInt(yField.getText());
+					GridNode node = new GridNode(x, y, valueField.getText());
+
+					grid.add(node);
+					grid.drawTree();
+				}
+			}
+		});
+
+		JMenuItem menuNovaLinha = new JMenuItem("Nova Conexão");
+		menuNovaLinha.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Component source = (Component) e.getSource();
+				JTextField x1Field = new JTextField("1");
+				JTextField y1Field = new JTextField("1");
+				JTextField x2Field = new JTextField("1");
+				JTextField y2Field = new JTextField("1");
+				Object[] message = new Object[] { "Pai", "X: ", x1Field, "Y: ",
+						y1Field, "Filho", "X: ", x2Field, "Y: ", y2Field };
+
+				int response = JOptionPane.showConfirmDialog(source, message,
+						"Nova Conexao", JOptionPane.OK_CANCEL_OPTION);
+
+				if (response == JOptionPane.OK_OPTION) {
+					int x1 = Integer.parseInt(x1Field.getText());
+					int y1 = Integer.parseInt(y1Field.getText());
+					int x2 = Integer.parseInt(x2Field.getText());
+					int y2 = Integer.parseInt(y2Field.getText());
+
+					GridNode parent = grid.getNode(x1, y1);
+					GridNode child = grid.getNode(x2, y2);
+					if (parent != null && child != null) {
+						child.setParent(parent);
+					}
+
+					grid.drawTree();
+				}
+			}
+		});
+
+		menuNovo.add(menuNovaFormula);
+		menuNovo.add(menuNovoNo);
+		menuNovo.add(menuNovaLinha);
+		menuBar.add(menuNovo);
+		super.setJMenuBar(menuBar);
 	}
 
 }
