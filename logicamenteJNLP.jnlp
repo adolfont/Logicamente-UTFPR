@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="iso-8859-15"?>
+<jnlp spec="1.0+" codebase="www.utfpr.br"> Aqui deve-se especificar o diretório raiz
+	<information>
+		<title>Logicamente JNLP</title>
+		<vendor>Maxsuel - Met. Ageis</vendor>
+		<description>Logicamente na WEB</description>
+		<offline-allowed/>
+	</information>
+	<resources>
+		<j2se version="1.4+"/>
+		<jar href="logicamente.jar"/>
+		<jar href="lib/igus-1.2.1-bin.jar"/>
+	</resources>
+	<application-desc main-class="SyntaxTreeDrawer"/>
+</jnlp>
