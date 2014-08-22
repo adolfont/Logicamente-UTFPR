@@ -155,12 +155,21 @@ public class DrawingGrid {
 	}
 
 	public void drawTree() {
-		for (GridNode node: nodes){
+		for (GridNode node : nodes) {
 			drawNode(node.getX(), node.getY(), node.getSymbol());
-			if (node.getParent()!=null){
-				drawLine(node.getX(), node.getY(), node.getParent().getX(), node.getParent().getY());
+			if (node.getParent() != null) {
+				drawLine(node.getX(), node.getY(), node.getParent().getX(),
+						node.getParent().getY());
 			}
 		}
 	}
 
+	public GridNode getNode(int x, int y) {
+		for (GridNode node : this.nodes) {
+			if (node.getX() == x && node.getY() == y) {
+				return node;
+			}
+		}
+		return null;
+	}
 }
