@@ -1,3 +1,5 @@
+# Logicamente UTFPR
+
 "Logicamente" is a system to help undergraduate students learn logic. It is a version of another system (see Section Original Logicamente). Runnable jars can be downloaded from http://github.com/adolfont/Logicamente-UTFPR/downloads.
 
 The objective of this version of Logicamente is to help students to learn the syntax of propositional classical logic.
@@ -6,12 +8,12 @@ The student gives as input a formula and the system draws a parse tree for the f
 
 This system is based in the "Tree Interaction" tab of the original Logicamente system.
 
-# Original Logicamente
+## Original Logicamente
 
 The original "Logicamente" system is available at http://www.dimap.ufrn.br/logicamente/.
 
 
-# Project Information
+## Project Information
 
 The development of this system is an activity in the 2010 edition of the Agile Methods course at PPGCA - UTFPR.
 
@@ -27,12 +29,12 @@ http://yuml.me/diagram/scruffy/usecase/[Student]-(DrawParseTree)
 
 
 
-# How to contribute 
+### How to contribute 
 
 * Make a personal fork of the project
 * When you have a contribution, send a pull request
 
-## Instructions for Windows users who want to download the project 
+### Instructions for Windows users who want to download the project 
 
 * Download Egit http://www.eclipse.org/egit/
 * Download the Logicamente-UTFPR GitHub repository
